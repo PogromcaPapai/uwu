@@ -13,11 +13,13 @@ class CreateAttendanceTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('attendance');
-        Schema::create('attendance', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->boolean('is_admin');
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->foreignId('event_id')->references('id')->on('events');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('event_id')->references('id')->on('events')->onDelete('cascade');
+            $table->timestamps();
+
+            // $table->unique(['user_id', 'event_id']);
         });
     }
 
