@@ -23,10 +23,9 @@ class CreatePlacesTable extends Migration
         });
         $file = fopen('database\miejsca.csv', 'r');
         $csv = fgetcsv($file, 0, ';');
-        while (TRUE)
+        $value = fgetcsv($file, 0, ';');
+        while ($value)
         {
-            $value = fgetcsv($file, 0, ';');
-            if (!$value) continue;
             DB::table('places')->insert([
                 'name'  => $value[0],
                 'desc'  => $value[1],
@@ -34,6 +33,7 @@ class CreatePlacesTable extends Migration
                 'powiat'=> $value[3],
                 'wojew' => $value[4],
             ]);
+            $value = fgetcsv($file, 0, ';');
         }
         fclose($file);
     }
