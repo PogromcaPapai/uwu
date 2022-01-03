@@ -1,0 +1,5 @@
+Zasięg ostrzeżeń w województwie WOJEWÓDZTWO (?<voivodeship>[\w\-]+)
+OSTRZEŻENIA METEOROLOGICZNE ZBIORCZO NR (?<id>\d+) WYKAZ OBOWIĄZUJĄCYCH OSTRZEŻEŃ
+o godz\. \d\d:\d\d dnia \d\d\.\d\d\.\d{4}
+(?<text>(?:\n|.)+)
+Dyżurny synoptyk (?<creator>.+?(?= IMGW-PIB))

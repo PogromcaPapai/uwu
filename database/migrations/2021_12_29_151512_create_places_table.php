@@ -21,6 +21,7 @@ class CreatePlacesTable extends Migration
             $table->string('powiat', 24+10);
             $table->string('wojew', 19+10);
         });
+        
         $file = fopen('database\miejsca.csv', 'r');
         $csv = fgetcsv($file, 0, ';');
         $value = fgetcsv($file, 0, ';');

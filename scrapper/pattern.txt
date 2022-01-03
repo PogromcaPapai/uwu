@@ -1,0 +1,13 @@
+Zjawisko/Stopień zagrożenia (?<event>[\w ]+)/(?<lvl>\d+)(?<messtype>| \w+)
+Obszar \(w nawiasie numer powiaty: (?<regions>(?:[\w- ]+\(\d+\)(?:, )*)+)
+(?:Ważność od godz\. (?<starthour>\d\d\:\d\d)
+dnia (?<startday>\d\d\.\d\d\.\d{4})
+do godz\. (?<endhour>\d\d\:\d\d)
+dnia (?<endday>\d\d\.\d\d\.\d{4})
+Prawdopodobieństwo (?<prob>\d{1,3}\%)
+Przebieg (?<how>.+?(?= SMS))|Czas
+odwołania godz\. (?<hour>\d\d:\d\d) dnia (?<day>\d\d\.\d\d\.\d{4})
+Przyczyna (?<cause>.+?(?= SMS)))
+SMS (?<sms>.+?(?= RSO))
+RSO (?<rso>.+?(?= Uwagi))
+Uwagi (?<remarks>[^\n]+)

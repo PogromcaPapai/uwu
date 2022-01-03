@@ -19,35 +19,16 @@ preprocess <- function(txt) {
   return (txt)
 }
 
+START_PATTERN <- gsub("\n", " ", readr::read_file('scrapper/start_pattern.txt'))
+PATTERN <- gsub("\n", " ", readr::read_file('scrapper/pattern.txt'))
+START_PATTERN <- gsub("\r", "", START_PATTERN)
+PATTERN <- gsub("\r", "", PATTERN)
+
 extract <- function(txt) {
-  START_PATTERN <- paste(
-    "Zasięg ostrzeżeń w województwie WOJEWÓDZTWO (?<voivodeship>[\\w\\-]+)",
-    "OSTRZEŻENIA METEOROLOGICZNE ZBIORCZO NR (?<id>\\d+) WYKAZ OBOWIĄZUJĄCYCH OSTRZEŻEŃ",
-    "o godz\\. \\d\\d:\\d\\d dnia \\d\\d\\.\\d\\d\\.\\d{4}",
-    "(?<text>(?:\n|.)+)",
-    "Dyżurny synoptyk (?<creator>.+?(?= IMGW-PIB))",
-    sep=" "
-  )
-  PATTERN <- paste(
-    "Zjawisko/Stopień zagrożenia (?<event>[\\w ]+)/(?<lvl>\\d+)(?<messtype>| \\w+)",
-    "Obszar \\(w nawiasie numer powiaty: (?<regions>(?:[\\w- ]+\\(\\d+\\)(?:, )*)+)",
-    "(?:Ważność od godz\\. (?<starthour>\\d\\d\\:\\d\\d)",
-    "dnia (?<startday>\\d\\d\\.\\d\\d\\.\\d{4})",
-    "do godz\\. (?<endhour>\\d\\d\\:\\d\\d)",
-    "dnia (?<endday>\\d\\d\\.\\d\\d\\.\\d{4})",
-    "Prawdopodobieństwo (?<prob>\\d{1,3}\\%)",
-    "Przebieg (?<how>.+?(?= SMS))|Czas",
-    "odwołania godz\\. (?<hour>\\d\\d:\\d\\d) dnia (?<day>\\d\\d\\.\\d\\d\\.\\d{4})",
-    "Przyczyna (?<cause>.+?(?= SMS)))",
-    "SMS (?<sms>.+?(?= RSO))",
-    "RSO (?<rso>.+?(?= Uwagi))",
-    "Uwagi (?<remarks>[^\n]+)",
-    sep=" "
-  )
-  pat <- str_match(txt, START_PATTERN)
   pat <- str_match(txt, START_PATTERN)
   df <- as.data.frame(str_match_all(pat[4], PATTERN))
-  df$voivodeship <- str_to_lower(pat[2], locale='pl')
+  print(df)
+  df$voivodeship <- str_to_lower(pat[2], locale = 'pl')
   df$warn_id <- pat[3]
   df$author <- pat[5]
   df$infile <- rownames(df)
@@ -125,15 +106,15 @@ if (nrow(df)>0)
 {
   for(i in 1:nrow(df)) {
     row <- df[i,]
-    dbExecute(mydb, "INSERT INTO warnings(event, lvl, starttime, endtime, prob, how, canceltime, cause, sms, rso, remarks, file, downloaded_at) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", immediate = TRUE,
-              params = list(row$event, row$lvl, format_time(row$startday, row$starthour), format_time(row$endday, row$endhour), row$prob, row$how, 
-                            format_time(row$day, row$hour), row$cause, row$sms, row$rso, row$remarks, row$file, row$downloaded))
+    # dbExecute(mydb, "INSERT INTO warnings(event, lvl, starttime, endtime, prob, how, canceltime, cause, sms, rso, remarks, file, downloaded_at) 
+    #   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", immediate = TRUE,
+    #           params = list(row$event, row$lvl, format_time(row$startday, row$starthour), format_time(row$endday, row$endhour), row$prob, row$how, 
+    #                         format_time(row$day, row$hour), row$cause, row$sms, row$rso, row$remarks, row$file, row$downloaded))
     for (j in get_places(row$regions)) {
       res <- dbGetQuery(mydb, "SELECT id FROM places WHERE powiat = ?", params = j)
       res['max'] <- dbGetQuery(mydb, "SELECT MAX(id) FROM warnings")
-      dbExecute(mydb, "INSERT INTO warned_places(place_id, warning_id) VALUES (?, ?)", immediate = TRUE,
-                params = list(res$id, res$max))
+      # dbExecute(mydb, "INSERT INTO warned_places(place_id, warning_id) VALUES (?, ?)", immediate = TRUE,
+      #           params = list(res$id, res$max))
       }
     }
 }

@@ -30,9 +30,10 @@ class EventFactory extends Factory
         $start = randomDate('2021-12-01', '2022-01-31');
         $end = randomDate($start, '2022-01-31');
         return [
-            'title' => Str::random(10),
+            'title' => $this->faker->title(),
             'start' => $start,
             'end'   => $end,
+            'place'   => 10,
         ];
     }
 }

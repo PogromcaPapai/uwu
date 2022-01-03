@@ -10,6 +10,23 @@ use App\Models\Attendance;
 
 class FullCalenderController extends Controller
 {
+	public function list(Request $request)
+    {
+      /*
+      Funkcja do eventów
+      */
+    	if($request->ajax())
+    	{
+			$found = Event::join('attendances', 'events.id', '=', 'attendances.event_id')
+						->where('user_id', '=', Auth::id());
+    		$data = $found->whereDate('start', '>=', $request->start)
+                       ->whereDate('end',   '<=', $request->end)
+                       ->get(['id', 'title', 'start', 'end']);
+            return response()->json($data);
+    	}
+    	return view('full-calender');
+    }
+
     public function index(Request $request)
     {
       /*

@@ -17,7 +17,7 @@ class CreateWarningsTable extends Migration
             $table->id();
             $table->text('event');
             $table->tinyInteger('lvl');
-            $table->string('messtype',1);
+            $table->tinyInteger('messtype');
             $table->datetime('starttime')->nullable();
             $table->datetime('endtime')->nullable();
             $table->string('prob', 4);
