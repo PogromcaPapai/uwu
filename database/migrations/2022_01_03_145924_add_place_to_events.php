@@ -26,7 +26,7 @@ class AddPlaceToEvents extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('place');
+            $table->dropConstrainedForeignId('events_place_foreign');
         });
     }
 }

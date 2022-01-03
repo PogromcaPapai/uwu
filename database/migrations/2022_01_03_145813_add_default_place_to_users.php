@@ -26,7 +26,7 @@ class AddDefaultPlaceToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('default_place');
+            $table->dropConstrainedForeignId('users_default_place_foreign');
         });
     }
 }

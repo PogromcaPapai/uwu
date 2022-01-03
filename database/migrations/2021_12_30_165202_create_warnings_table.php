@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateWarningsTable extends Migration
@@ -29,6 +30,7 @@ class CreateWarningsTable extends Migration
             $table->text('remarks');
             $table->string('file', 31);
             $table->datetime('downloaded_at');
+            $table->timestamps();
         });
         DB::statement("DROP USER IF EXISTS `warn-scrap`@`localhost`");
         DB::statement("GRANT USAGE ON *.* TO `warn-scrap`@`localhost` IDENTIFIED BY 'FW2BL(@qHE)vS*nY'");
