@@ -17,7 +17,7 @@ class WarningFactory extends Factory
         $start = randomDate('2021-12-01', '2022-01-31');
         $end = randomDate($start, '2022-01-31');
         return [
-            'event' => "Incoming ".$this->faker->title(),
+            'event' => "Incoming ".$this->faker->sentence(),
             'lvl' => 1,
             'messtype' => 0,
             'starttime' => $start,

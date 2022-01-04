@@ -62,16 +62,17 @@ extract <- function(txt) {
 
 get_warns <- function(file) {
   webpage_url <- "https://danepubliczne.imgw.pl/data/current/ost_meteo/"
-  time <- Sys.time()
   saved.file <- paste('tmp', file, sep="/")
   if (!file.exists(saved.file)) {
     download.file(paste(webpage_url, file, sep=""), saved.file, mode="wb")
   }
-  
+  return (read_warns(saved.file))
+}
+
+read_warns <- function(saved.file) {
   txt <- preprocess(pdf_text(saved.file))
   extracted <- extract(txt)
-  extracted$file <- file
-  extracted['downloaded'] <- time
+  extracted$file <- saved.file
   extracted$messtype[extracted['messtype']==" ZMIANA"] <- "1"
   extracted$messtype[extracted['messtype']==" WYCOFANIE"] <- "2"
   extracted$messtype[extracted['messtype']==""] <- "0"
@@ -113,7 +114,7 @@ function(place) {
   if (length(ost_files$Name)>0){
     file <- ost_files$Name[1]
     df <- get_warns(file)
-  
+    
     if (length(ost_files$Name)>1){
       for (file in ost_files$Name[2:length(ost_files$Name)]) {
         df <- rbind(df, get_warns(file))
@@ -129,6 +130,81 @@ function(place) {
     df$canceltime <- mapply(format_time, df$day, df$hour)
     
     fin <- df %>% filter(messtype == '0') %>% filter(include) %>% select(-c(V1, include, startday, starthour, endday, endhour, day, hour))
+    return(fin)
+  }
+  else {
+    return(c())
+  }
+}
+
+#* Zwraca wszystkie ostrzeżenia
+#* @param place nie wpływa
+#* @get /test
+function(place) {
+  
+  # Get file list
+  
+  ost_files <- list.files('tmp')
+  
+  # Download and process files
+  if (length(ost_files)>0){
+    file <- ost_files[1]
+    df <- read_warns(paste('tmp', file, sep="/"))
+    
+    if (length(ost_files)>1){
+      for (file in ost_files[2:length(ost_files)]) {
+        df <- rbind(df, read_warns(paste('tmp', file, sep="/")))
+      }
+    }
+    
+    # Formatting
+    df$regions <- get_places(df$regions)
+    
+    df$starttime <- mapply(format_time, df$startday, df$starthour)
+    df$endtime <- mapply(format_time, df$endday, df$endhour)
+    df$canceltime <- mapply(format_time, df$day, df$hour)
+    
+    fin <- df %>% filter(messtype == '0') %>% select(-c(V1, startday, starthour, endday, endhour, day, hour))
+    return(fin)
+  }
+  else {
+    return(c())
+  }
+}
+
+#* Zwraca wszystkie ostrzeżenia
+#* @get /
+function() {
+  
+  # Get file list
+  webpage_url <- "https://danepubliczne.imgw.pl/data/current/ost_meteo/"
+  webpage <- xml2::read_html(webpage_url)
+  
+  ost_files <- rvest::html_table(webpage)[[1]] %>% 
+    tibble::as_tibble(.name_repair = "unique") %>%
+    filter(Name != "" & Name != "Parent Directory") %>%
+    select(Name, `Last modified`) %>% 
+    rename_with(function(x){"modified_at"}, "Last modified")
+  
+  # Download and process files
+  if (length(ost_files$Name)>0){
+    file <- ost_files$Name[1]
+    df <- get_warns(file)
+    
+    if (length(ost_files$Name)>1){
+      for (file in ost_files$Name[2:length(ost_files$Name)]) {
+        df <- rbind(df, get_warns(file))
+      }
+    }
+    
+    # Formatting
+    df$regions <- get_places(df$regions)
+    
+    df$starttime <- mapply(format_time, df$startday, df$starthour)
+    df$endtime <- mapply(format_time, df$endday, df$endhour)
+    df$canceltime <- mapply(format_time, df$day, df$hour)
+    
+    fin <- df %>% filter(messtype == '0') %>% select(-c(V1, startday, starthour, endday, endhour, day, hour))
     return(fin)
   }
   else {
