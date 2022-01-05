@@ -1,63 +1,141 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Edycja wydarzenia') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+        <div class="mx-auto sm:px-6 lg:px-8 max-w-xl">
+            <div class="flex bg-white shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white">
                     <form method="POST">
                         @csrf
-                        <label for="title">Nazwa wydarzenia</label>
-                        <input type="text" name="title" id="title" value={{ $event->title }}>
-                        <label for="start">Dzień rozpoczęcia</label>
-                        <input type="date" name="start" id="start" value={{ $event->start }}>
-                        <label for="end">Dzień zakończenia</label>
-                        <input type="date" name="end" id="end" value={{ $event->end }}>
-                        <label for="description">Opis</label>
-                        <textarea name="description" id="description" cols="30"
-                            rows="10">{{ $event->description }}</textarea>
+                        <div class="md:flex md:items-center mb-6 ">
+                            <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="title">Nazwa wydarzenia</label>
+                            </div>
+                            <div class="md:w-2/3">
+                                <input type="text" name="title" id="title" @if ($edit)
+                                value="{{ $event->title }}" {{ $editable }}
+                                @endif
+                                class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">
+                            </div>
+                        </div>
 
-                        <label for="place">Miejsce wydarzenia</label>
-                        <br>
-                        <select name="places" id="places"></select>
+                        <div class="md:flex md:items-center mb-6">
+                            <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="start">Data
+                                    rozpoczęcia</label>
+                            </div>
+                            <div class="md:w-2/3">
+                                <input type="date" name="start" id="start" @if ($edit)
+                                value="{{ $event->start }}" {{ $editable }}
+                                @else
+                                @if (!is_null($start))
+                                value="{{ $start }}" 
+                                @endif
+                                @endif
+                                class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">
+                            </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                            <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="end">Data zakończenia</label>
+                            </div>
+                            <div class="md:w-2/3">
+                                <input type="date" name="end" id="end" @if ($edit)
+                                value="{{ $event->end }}" {{ $editable }}
+                                @else
+                                @if (!is_null($end))
+                                value="{{ $end }}" 
+                                @endif
+                                @endif
+                                class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">
+                            </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                            <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="description">Opis
+                                    wydarzenia</label>
+                            </div>
+                            <div class="md:w-2/3">
+                                <textarea name="description" id="description" style="resize: none" @if ($edit)
+                                        {{ $editable }}
+                                    @endif
+                                    class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">@if ($edit){{ $event->description }}@endif</textarea>
+                            </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                            <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="place">Miejsce
+                                    wydarzenia</label>
+                            </div>
+                            <div class="md:w-2/3">
+                                @if (!$edit || $editable != 'readonly')
+                                    <select name="place" id="place"></select>
+                                    <script>
+                                        $("#place").selectize({
+                                            valueField: "id",
+                                            labelField: "label",
+                                            searchField: "name",
 
-                        <script>
-                            $("#places").selectize({
-                                valueField: "id",
-                                labelField: "label",
-                                searchField: "name",
-                                load: function(query, callback) {
-                                    if (!query.length) return callback();
-                                    $.ajax({
-                                        url: "/place",
-                                        type: "get",
-                                        data: {
-                                            q: query
-                                        },
-                                        success: function(places) {
-                                            var items = [];
-                                            for (var i in places) {
-                                                items.push({
-                                                    id: places[i].id,
-                                                    name: places[i].name,
-                                                    label: `${places[i].name} (${places[i].desc}, ${places[i].powiat})`
+                                            @if ($edit)
+                                                placeholder: "{{ $event->name }}",
+                                            @endif
+
+                                            load: function(query, callback) {
+                                                if (!query.length) return callback();
+                                                $.ajax({
+                                                    url: "/place",
+                                                    type: "get",
+                                                    data: {
+                                                        q: query
+                                                    },
+                                                    success: function(places) {
+                                                        var items = [];
+                                                        for (var i in places) {
+                                                            items.push({
+                                                                id: places[i].id,
+                                                                name: places[i].name,
+                                                                label: `${places[i].name} (${places[i].desc}, ${places[i].powiat})`
+                                                            });
+                                                        }
+                                                        console.log(items);
+                                                        callback(items);
+                                                    }
                                                 });
-                                            }
-                                            console.log(items);
-                                            callback(items);
-                                        }
-                                    });
-                                },
-                            });
-                        </script>
+                                            },
+                                        })
+                                    </script>
 
-                        @error('place', 'title')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
+                                @else
+                                    <input type="text" name="title" id="title" value="{{ $event->name }}" readonly
+                                        class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">
+                                @endif
+                            </div>
+                        </div>
+                        @if ($errors->any())
+                            <div class="flex-initial flex-col bg-red-100 border-l-8 border-red-600 py-1 my-3">
+                                @foreach ($errors->all() as $error)
+                                    <p class="text-md font-bold text-red-600 text-sm p-1.5 pl-6">{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="flex justify-center gap-1.5">
+                            <a type="button"
+                                class="inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                                href="/events/index">Wróć</a>
+                            @if (!$edit || $editable != 'readonly')
+                                <button type="submit"
+                                    class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Zapisz</button>
+                            @endif
+                            @if ($edit)
+                                <a type="button"
+                                    class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                                    href="/events/edit/{{ $event->event_id }}/delete">Usuń</a>
+                            @endif
+                        </div>
                     </form>
                 </div>
             </div>

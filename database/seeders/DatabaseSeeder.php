@@ -24,17 +24,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'test',
             'email' => 'test@test.com',
             'password' => Hash::make('12345678'),
-            'default_place' => null,
         ]);
         DB::table('users')->insert([
             'name' => 'abc',
             'email' => 'abc@test.com',
             'password' => Hash::make('12345678'),
-            'default_place' => 10,
         ]);
         Event::factory(10)->create();
         Attendance::factory(10)->create();
-        Warning::factory(10)->create();
-        WarnedPlace::factory(10)->create();
     }
 }

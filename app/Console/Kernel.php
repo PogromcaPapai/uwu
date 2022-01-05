@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->exec('"C:\Program Files\R\R-4.1.1\bin\R.exe" scrapper.R uvvv')->hourly();
     }
 
     /**

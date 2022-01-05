@@ -14,7 +14,7 @@ class AddPlaceToEvents extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->foreignId('place')->nullable()->references('id')->on('places')->onDelete('cascade');
+            $table->foreignId('place')->references('id')->on('places')->onDelete('cascade');
         });
     }
 
