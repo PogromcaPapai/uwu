@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'uvv') }}</title>
+        <title>{{ config('app.name', 'uvvv') }}</title>
+
+        <link rel="icon" href="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-calendar-calendar-kmg-design-flat-kmg-design-35.png" type="image/icon type">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -42,6 +44,12 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <footer class="flex flex-col items-center text-gray-600 text-xs">
+                <p><b>Autorzy: </b> Jakub Dakowski, Przemysław Cydejko, Jakub Czernek</p>
+                <p>Dane o ostrzeżeniach pogodowych pochodzą ze strony <a href="https://danepubliczne.imgw.pl/">IMGW</a></p>
+                <p><a href="https://icons8.com/icon/NRSk3o774DQK/calendar">Calendar icon by Icons8</a></p>
+            </footer> 
         </div>
     </body>
 </html>

@@ -37,7 +37,7 @@ class EventForm extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if ($this->place != null && Place::where('name', "=", $this->place)->count() == 1) {
+            if (!is_null($this->place) && Place::where('name', "=", $this->place)->count() == 1) {
                 $validator->errors()->add('place', 'Musisz podać nazwę miejsca');
             }
             if (new DateTime($this->start) > new DateTime($this->end)) {

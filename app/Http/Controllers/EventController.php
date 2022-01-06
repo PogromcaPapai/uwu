@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventForm;
+use App\Http\Requests\CreateEventForm;
 use App\Models\Attendance;
 use App\Models\Event;
 use DateTime;
@@ -54,7 +55,9 @@ class EventController extends Controller
      */
     public function create_for_call(Request  $request)
     {
-        return view('events/edit', ["edit" => false, 'start' => $request->start, 'end' => $request->end]);
+        $start = new DateTime($request->start);
+        $end = new DateTime($request->end);
+        return view('events/edit', ["edit" => false, 'start' => $start->format('Y-m-d'), 'end' => $end->format('Y-m-d')]);
     }
 
     /**
@@ -73,7 +76,7 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EventForm $request)
+    public function store(CreateEventForm $request)
     {
         $event = new Event;
         $event->title = $request->title;

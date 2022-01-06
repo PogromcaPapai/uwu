@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Terminarz') }}
+            {{ __('app.agenda')}}
         </h2>
     </x-slot>
 
     <a class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-md leading-tight uppercase rounded-full hover:bg-blue-700 focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
         style="position:fixed; bottom:30px; right:40px;" href="{{ route('add_event') }}">
-        <span>Dodaj wydarzenie</span>
+        <span>{{ __('app.add_event')}}</span>
     </a>
 
     <div class="py-12">
@@ -30,8 +30,7 @@
                                 </div>
                                 @if ($item->is_admin == 1)
                                     <div class="border-8 border-red-100 bg-red-100 rounded-full m-1">
-                                        <span class="px-2 border-white border-4 bg-white rounded-full">Zarządzasz
-                                            wydarzeniem</span>
+                                        <span class="px-2 border-white border-4 bg-white rounded-full">{{ __("app.admin") }}</span>
                                     </div>
                                 @endif
                             </div>
@@ -42,7 +41,7 @@
                                 @foreach ($prog[$item->event_id] as $warn)
                                     <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4"
                                         role="alert">
-                                        <p class="font-bold">{{ $warn['event'] }} stopnia {{ $warn['lvl'] }}
+                                        <p class="font-bold">{{ $warn['event'] }} ({{__('app.level')}} {{ $warn['lvl'] }})
                                         </p>
                                         <p>{{ $warn['rso'] }}</p>
                                     </div>
@@ -51,7 +50,7 @@
                             <div class="mt-6 "><a
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                                     href="/events/edit/{{ $item->event_id }}">
-                                    Otwórz
+                                    {{ __('app.view') }}
                                 </a></div>
                         </div>
                     </div>

@@ -13,12 +13,16 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Nie znaleźliśmy takiego konta.',
+    'password' => 'Niepoprawne hasło.',
+    'throttle' => 'Za dużo prób logowania, spróbuj ponownie za :seconds sekund.',
 
-    'logout' => 'Log out',
-    'login' => 'Log in',
-    'register' => 'Register',
-    'passforgot' => 'Forgot your password?',
+    'logout' => 'Wyloguj się',
+    'login' => 'Zaloguj się',
+    'register' => 'Zarejestruj się',
+    'passforgot' => 'Zapomniałeś hasła',
+    'remember' => 'Zapamiętaj mnie!',
+    'already' => 'Posiadasz już konto?'
+
+    
 ];

@@ -31,7 +31,9 @@ Route::post('full-calender/action', [FullCalenderController::class, 'action'])->
 Route::prefix('events')->group(function () {
     Route::get('index', [EventController::class, 'index'])->middleware(['auth'])->name('events');
     Route::get('add', [EventController::class, 'create'])->middleware(['auth'])->name('add_event');
+    Route::get('add/calendar', [EventController::class, 'create_for_call'])->middleware(['auth'])->name('add_event_calendar');
     Route::post('add', [EventController::class, 'store'])->middleware(['auth']);
+    Route::post('add/calendar', [EventController::class, 'store'])->middleware(['auth']);
     Route::get('edit/{id}', [EventController::class, 'edit'])->middleware(['auth']);
     Route::post('edit/{id}', [EventController::class, 'update'])->middleware(['auth']);
     Route::get('edit/{id}/delete', [EventController::class, 'destroy'])->middleware(['auth']);
