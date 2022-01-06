@@ -11,4 +11,6 @@ return [
     "end" => "Data zakończenia",
     "description" => "Opis wydarzenia",
     "place" => "Miejsce wydarzenia",
+    "invites" => "Zaproszeni użytkownicy",
+    "invites_email" => "E-maile oddzielone przecinkami"
 ];

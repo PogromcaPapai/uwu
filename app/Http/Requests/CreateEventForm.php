@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Place;
+use App\Models\User;
 use DateTime;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,7 +32,7 @@ class CreateEventForm extends FormRequest
             'end' => ['required'],
             'description' => [],
             'place' => ['required'],
-            // 'invited' => []
+            'invites' => []
         ];
     }
     public function withValidator($validator)
@@ -43,6 +44,15 @@ class CreateEventForm extends FormRequest
             if (new DateTime($this->start) > new DateTime($this->end)) {
                 $validator->errors()->add('end', 'Wydarzenie musi zakończyć się po rozpoczęciu.');
             }
+            $mails = explode(", ", $this->invites);
+            $plucked = User::pluck('email');
+            foreach ($mails as $mail) {
+                if (!$plucked->contains($mail)) {
+                    $validator->errors()->add('invites', 'Możesz zapraszać tylko istniejących użytkowników');
+                }
+                
+            }
+            
         });
     }
 }

@@ -11,4 +11,5 @@ return [
     "delete" => "Usuń",
     "edit_event" => "Edycja wydarzenia",
     "add_event" => "Dodaj wydarzenie",
+    "forecast" => "Aktualna pogoda",
 ];

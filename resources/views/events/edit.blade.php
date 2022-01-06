@@ -68,6 +68,18 @@
                         </div>
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3">
+                                <label class="block md:text-right mb-1 md:mb-0 pr-4" for="invites">{{ __("forms.invites") }}</label>
+                                <div class="block uppercase font-black text-gray-600 md:text-right text-xs pr-4 pb-2">{{ __("forms.invites_email") }}</div>
+                            </div>
+                            <div class="md:w-2/3">
+                                <textarea name="invites" id="invites" style="resize: none" @if ($edit)
+                                        {{ $editable }}
+                                    @endif
+                                    class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">@if ($edit){{ $invites }}@endif</textarea>
+                            </div>
+                        </div>
+                        <div class="md:flex md:items-center mb-6">
+                            <div class="md:w-1/3">
                                 <label class="block md:text-right mb-1 md:mb-0 pr-4" for="place">Miejsce
                                     wydarzenia</label>
                             </div>
