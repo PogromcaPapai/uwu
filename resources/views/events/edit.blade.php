@@ -1,3 +1,10 @@
+{{-- 
+    Formularz tworzenia i edycji wydarzeń
+    
+    $edit jest wartością informującą, czy jest to edycja istniejącego wydarzenia
+    $editable wkleja własność readonly, jeżeli użytkownik nie ma może edytować wydarzenia; niepotrzebne, gdy $edit=true
+    $event jest edytowanym eventem; niepotrzebne, gdy $edit=true
+--}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -7,9 +14,11 @@
 
     <div class="py-12">
         <div class="mx-auto sm:px-6 lg:px-8 max-w-xl">
-            <div class="flex bg-white shadow-sm sm:rounded-lg">
+            <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white">
                     <form method="POST">
+
+                        {{-- Formularz --}}
                         @csrf
                         <div class="md:flex md:items-center mb-6 ">
                             <div class="md:w-1/3">
@@ -80,6 +89,8 @@
                                     class="rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full">@if ($edit){{ $invites }}@endif</textarea>
                             </div>
                         </div>
+
+                        {{-- Pole na miejsce wydarzenia --}}
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3">
                                 <label class="block md:text-right mb-1 md:mb-0 pr-4" for="place">Miejsce
@@ -129,6 +140,8 @@
                                 @endif
                             </div>
                         </div>
+                        
+                        {{-- Pole na błędy --}}
                         @if ($errors->any())
                             <div class="flex-initial flex-col bg-red-100 border-l-8 border-red-600 py-1 my-3">
                                 @foreach ($errors->all() as $error)
@@ -138,7 +151,7 @@
                             </div>
                         @endif
                         <div class="flex justify-center gap-1.5">
-                            <a type="button"
+                            <a
                                 class="inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
                                 href="/events/index">{{ __('app.goback') }}</a>
                             @if (!$edit || $editable != 'readonly')
@@ -146,7 +159,7 @@
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">{{ __('app.save') }}</button>
                             @endif
                             @if ($edit)
-                                <a type="button"
+                                <a
                                     class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
                                     href="/events/edit/{{ $event->event_id }}/delete">{{ __('app.delete') }}</a>
                             @endif

@@ -14,6 +14,7 @@ class CreatePlacesTable extends Migration
      */
     public function up()
     {
+        // Stworzenie tabeli
         Schema::create('places', function (Blueprint $table) {
             $table->id();
             $table->string('name', 40+10);
@@ -23,8 +24,8 @@ class CreatePlacesTable extends Migration
             $table->string('wojew', 19+10);
         });
         
+        // Uzupełnienie tabeli na podstawie listy miejsc
         $file = fopen('database\miejsca.csv', 'r');
-        $csv = fgetcsv($file, 0, ';');
         $value = fgetcsv($file, 0, ';');
         while ($value)
         {

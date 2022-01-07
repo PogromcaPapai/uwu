@@ -19,7 +19,7 @@ class CreateAttendanceTable extends Migration
             $table->foreignId('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->timestamps();
 
-            // $table->unique(['user_id', 'event_id']);
+            // $table->unique(['user_id', 'event_id']); // Ze względu na konstrukcję seedera, należy tą część wyłączyć.
         });
     }
 

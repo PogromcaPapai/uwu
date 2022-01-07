@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 class EventAttend extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seeder bez dodawania użytkowników
      *
      * @return void
      */

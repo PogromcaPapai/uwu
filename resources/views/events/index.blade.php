@@ -16,6 +16,7 @@
                 @foreach ($events as $item)
                     <div class="bg-white rounded shadow-lg">
                         <div class="px-6 py-4 space-y-3">
+                            {{-- Pojedyncze wydarzenie w terminarzu --}}
                             <h2 class="font-bold text-xl mb-2">{{ $item->title }}</h2>
                             <div class="flex flex-row flex-wrap">
                                 <div class="border-8 border-sky-100 bg-sky-100 rounded-full m-1">
@@ -38,7 +39,10 @@
                             <p class="text-gray-700 text-base">
                                 {{ $item->description }}
                             </p>
+
                             <div class="space-y-2">
+
+                                {{-- Informacje o aktualnej pogodzie --}}
                                 @if (!is_null($weather[$item->event_id]))
                                     <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
                                         <h3 class="font-bold">{{ __('app.forecast') }} -
@@ -52,6 +56,8 @@
                                         </p>
                                     </div>
                                 @endif
+
+                                {{-- Ostrzeżenia pogodowe --}}
                                 @foreach ($prog[$item->event_id] as $warn)
                                     <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4"
                                         role="alert">
@@ -62,6 +68,8 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            {{-- Przycisk --}}
                             <div class="mt-6 "><a
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                                     href="/events/edit/{{ $item->event_id }}">

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Domyślny seeder
      *
      * @return void
      */

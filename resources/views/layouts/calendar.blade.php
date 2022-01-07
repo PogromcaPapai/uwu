@@ -1,4 +1,14 @@
+{{-- Plik przechowujący skrypt generujący kalendarz, "wczepienie go" w inny plik wygeneruje w nim kalendarz --}}
 <script>
+    function resizer(trash = null) {
+        if ($(window).width() < 514) {
+            $('#calendar').fullCalendar('changeView', 'listWeek');
+            $('.fc-right').hide()
+        } else {
+            $('#calendar').fullCalendar('changeView', 'month');
+            $('.fc-right').show()
+        }
+    }
     $(document).ready(function() {
 
         $.ajaxSetup({
@@ -12,32 +22,18 @@
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'month,agendaWeek,agendaDay'
+                right: 'month,listWeek'
             },
             events: '/full-calender',
             selectable: true,
             selectHelper: true,
+            windowResize: resizer,
             select: function(start, end, allDay) {
                 var start = $.fullCalendar.formatDate(start, 'Y-MM-DD HH:mm:ss');
 
                 var end = $.fullCalendar.formatDate(end, 'Y-MM-DD HH:mm:ss');
 
                 $(location).attr("href", `/events/add/calendar?start=${start}&end=${end}`);
-                // $.ajax({
-                //     url:"/full-calender/action",
-                //     type:"POST",
-                //     data:{
-                //         title: title,
-                //         start: start,
-                //         end: end,
-                //         type: 'add'
-                //     },
-                //     success:function(data)
-                //     {
-                //         calendar.fullCalendar('refetchEvents');
-                //         alert("Event Created Successfully");
-                //     }
-                // }
             },
             editable: true,
             eventAllow: function(drop, event) {
@@ -84,6 +80,7 @@
             }
         });
 
+        resizer()
     });
 </script>
 <div id='calendar'></div>

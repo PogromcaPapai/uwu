@@ -6,6 +6,7 @@ use App\Models\Place;
 use App\Models\User;
 use DateTime;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EventForm extends FormRequest
 {
@@ -32,26 +33,31 @@ class EventForm extends FormRequest
             'end' => ['required'],
             'description' => [],
             'place' => [],
-            // 'invited' => []
+            'invites' => []
         ];
     }
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!is_null($this->place) && Place::where('name', "=", $this->place)->count() == 1) {
-                $validator->errors()->add('place', 'Musisz podać nazwę miejsca');
-            }
+            // Program sprawdza, czy wydarzenie kończy się po swoim początku
             if (new DateTime($this->start) > new DateTime($this->end)) {
                 $validator->errors()->add('end', 'Wydarzenie musi zakończyć się po rozpoczęciu.');
             }
+
+            // Test poprawności zaproszeń
             $mails = explode(", ", $this->invites);
             $plucked = User::pluck('email');
+            $user = User::where('id', '=', Auth::id())->first();
             foreach ($mails as $mail) {
-                if (!$plucked->contains($mail)) {
+                if ($mail == $user->mail) {
+                    $validator->errors()->add('invites', 'Nie możesz zapraszać samego siebie');
+                }
+                if ($mail != "" && !$plucked->contains($mail)) {
                     $validator->errors()->add('invites', 'Możesz zapraszać tylko istniejących użytkowników');
                 }
                 
             }
+            
         });
     }
 }
