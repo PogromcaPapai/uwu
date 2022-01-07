@@ -22,6 +22,7 @@
                                 zwiększał, wymuszając na wielu osobach zmiany w trybie życia.</p>
                         </div>
                     </article>
+                    <div id="temperature-widget-container"></div>
                     <script type="text/javascript" src="https://www.climatelevels.org/graphs/js/temperature.php?theme=grid-light&pid=2degreesinstitute">
                     </script>
                 </div>
