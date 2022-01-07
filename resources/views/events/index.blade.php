@@ -40,11 +40,16 @@
                             </p>
                             <div class="space-y-2">
                                 @if (!is_null($weather[$item->event_id]))
-                                    <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4"
-                                        role="alert">
-                                        <h3 class="font-bold">{{ __('app.forecast')}} - {{ $weather[$item->event_id]['stacja'] }}
+                                    <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
+                                        <h3 class="font-bold">{{ __('app.forecast') }} -
+                                            {{ $weather[$item->event_id]['stacja'] }}
                                         </h3>
-                                        <p>Temperatura w tym punkcie wynosiła o {{ $weather[$item->event_id]['godzina_pomiaru'] }}:00 {{ $weather[$item->event_id]['temperatura'] }} stopni, wiatr wiał z prędkością {{ $weather[$item->event_id]['predkosc_wiatru'] }} km/h, a suma opadów wyniosła {{ $weather[$item->event_id]['suma_opadu'] }} mm.</p>
+                                        <p>Temperatura w tym punkcie wynosiła o
+                                            {{ $weather[$item->event_id]['godzina_pomiaru'] }}:00
+                                            {{ $weather[$item->event_id]['temperatura'] }} stopni, wiatr wiał z
+                                            prędkością {{ $weather[$item->event_id]['predkosc_wiatru'] }} km/h, a
+                                            suma opadów wyniosła {{ $weather[$item->event_id]['suma_opadu'] }} mm.
+                                        </p>
                                     </div>
                                 @endif
                                 @foreach ($prog[$item->event_id] as $warn)
@@ -67,6 +72,5 @@
                 @endforeach
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>

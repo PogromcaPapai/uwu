@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('events')" :active="request()->routeIs('events')">
-                        {{ __('app.agenda')}}
+                        {{ __('app.agenda') }}
                     </x-nav-link>
                     <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                         {{ __('app.calendar') }}
@@ -31,7 +31,8 @@
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ml-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                             clip-rule="evenodd" />
@@ -46,7 +47,7 @@
                                 @csrf
 
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                        this.closest('form').submit();">
+                                                                this.closest('form').submit();">
                                     {{ __('auth.logout') }}
                                 </x-dropdown-link>
                             </form>
@@ -60,7 +61,7 @@
                             class="text-sm text-gray-700 hover:text-gray-500 underline hover:no-underline">{{ __('auth.login') }}</a>
                     </div>
                     <div>
-                    <a href="{{ route('register') }}"
+                        <a href="{{ route('register') }}"
                             class="ml-4 text-sm text-gray-700 hover:text-gray-500 underline hover:no-underline">{{ __('auth.register') }}</a>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('events')" :active="request()->routeIs('events')">
-                {{ __('app.agenda')}}
+                {{ __('app.agenda') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                 {{ __('app.calendar') }}
@@ -95,7 +96,7 @@
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
-            @auth    
+            @auth
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
@@ -107,7 +108,7 @@
                         @csrf
 
                         <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
-                                            this.closest('form').submit();">
+                                                    this.closest('form').submit();">
                             {{ __('auth.logout') }}
                         </x-responsive-nav-link>
                     </form>
