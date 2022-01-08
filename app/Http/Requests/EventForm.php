@@ -45,11 +45,11 @@ class EventForm extends FormRequest
             }
 
             // Test poprawności zaproszeń
-            $mails = explode(", ", $this->invites);
+            $mails = explode(",", str_replace(" ", "", $this->invites));
             $plucked = User::pluck('email');
             $user = User::where('id', '=', Auth::id())->first();
             foreach ($mails as $mail) {
-                if ($mail == $user->mail) {
+                if ($mail == $user->email) {
                     $validator->errors()->add('invites', 'Nie możesz zapraszać samego siebie');
                 }
                 if ($mail != "" && !$plucked->contains($mail)) {
