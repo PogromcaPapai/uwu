@@ -97,9 +97,10 @@ get_places <- function(place_list) {
 
 #* Zwraca ostrzeżenia dla powiatu
 #* @param place powiat występowania
-#* @get /warns
+#* @get /warn
 function(place) {
-  
+  place <- str_to_lower(place)
+
   # Get file list
   webpage_url <- "https://danepubliczne.imgw.pl/data/current/ost_meteo/"
   webpage <- xml2::read_html(webpage_url)
