@@ -1,6 +1,6 @@
 load.lib<-c(
     "xml2", 
-    "dplyr", 
+    "tidyverse", 
     "pdftools", 
     "stringr", 
     "plumber"
