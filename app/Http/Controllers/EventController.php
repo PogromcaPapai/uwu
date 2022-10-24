@@ -70,15 +70,15 @@ class EventController extends Controller
             // Zbieranie informacji o ostrzeżeniach
             $prognosis[$event->event_id] = [];
 
-            // Komunikacja z Plumber API
-            $found = Http::get('http://127.0.0.1:3447/warn?place=' . $event->powiat);
+            // // Komunikacja z Plumber API
+            // $found = Http::get('http://127.0.0.1:3447/warn?place=' . $event->powiat);
 
-            if ($found->successful()) {
-                foreach ($found->json() as $warn) {
-                    if (EventController::overlap($event->start, $warn["starttime"][0], $event->end, $warn["endtime"][0]))
-                        array_push($prognosis[$event->event_id], $warn);
-                }
-            }
+            // if ($found->successful()) {
+            //     foreach ($found->json() as $warn) {
+            //         if (EventController::overlap($event->start, $warn["starttime"][0], $event->end, $warn["endtime"][0]))
+            //             array_push($prognosis[$event->event_id], $warn);
+            //     }
+            // }
 
             // Zbieranie informacji o aktualnej pogodzie z danych IMGW
             $now = (new DateTime())->format('Y-m-d H:i:s');
