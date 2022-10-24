@@ -22,6 +22,8 @@ class CreatePlacesTable extends Migration
             $table->string('gmina', 23+10);
             $table->string('powiat', 24+10);
             $table->string('wojew', 19+10);
+            $table->float('lat', 12, 8);
+            $table->float('lon', 12, 8);
         });
         
         // Uzupełnienie tabeli na podstawie listy miejsc
@@ -35,6 +37,8 @@ class CreatePlacesTable extends Migration
                 'gmina' => $value[2],
                 'powiat'=> $value[3],
                 'wojew' => $value[4],
+                'lat' => $value[5],
+                'lon' => $value[6],
             ]);
             $value = fgetcsv($file, 0, ';');
         }
