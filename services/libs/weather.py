@@ -50,3 +50,6 @@ def forecast(lat: float, lon: float, moment: datetime):
         (i["main"] for i in frcsts if i['dt'] > (moment - timedelta(hours=3)).timestamp()), 
         None
     )
+    
+def forecast_for_user(user, lat: float, lon: float, moment: datetime, delta_time=timedelta(days=1)):
+    setting = user.preferences

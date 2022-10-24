@@ -1,8 +1,8 @@
 from datetime import datetime
 from fastapi import FastAPI
-from services.weather import forecast
 
-from weather import get_alerts, forecast
+
+from .libs.weather import get_alerts, forecast
 
 app = FastAPI()
 
