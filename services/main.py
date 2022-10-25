@@ -33,7 +33,7 @@ def check(weather, preferences):
     preferences = preferences or CONFIG['default_pref']
     group=int(str(weather['code'])[0])
     # Temperature
-    if preferences['temp_min'] is not None and weather['temp'] < preferences['temp_min']:
+    if preferences['min_temp'] is not None and weather['temp'] < preferences['min_temp']:
         yield 'temperature low'
 
     if preferences['max_temp'] is not None and weather['temp'] > preferences['max_temp']:
