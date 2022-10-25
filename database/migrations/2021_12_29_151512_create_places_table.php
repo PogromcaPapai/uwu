@@ -28,7 +28,7 @@ class CreatePlacesTable extends Migration
         
         // Uzupełnienie tabeli na podstawie listy miejsc
         $file = fopen('database\miejsca.csv', 'r');
-        $value = fgetcsv($file, 0, ',');
+        $value = fgetcsv($file, 0, ';');
         while ($value)
         {
             DB::table('places')->insert([
