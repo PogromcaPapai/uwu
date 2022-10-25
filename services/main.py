@@ -21,8 +21,7 @@ async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
     moment = moment or datetime.now() + timedelta(hours=4)
     return forecast(lat, lon, moment)
 
-@app.get("/forecast/place/{place_id}")
-async def _forecast_place(place_id: int, moment: datetime | None = None):
+def forecast_place(place_id: int, moment: datetime | None = None):
     moment = moment or datetime.now() + timedelta(hours=4)
     query = select(Place).where(Place.id==place_id)
     with Session(engine) as db:
@@ -67,7 +66,7 @@ def forecast_attendence(attend_id:int):
         event = attendence.event_
         moment = middle(event.start, event.end)
 
-        if (weather := _forecast_place(event.place, moment)) is None: return None
+        if (weather := forecast_place(event.place, moment)) is None: return None
 
     return {
         "forecast": weather, 
