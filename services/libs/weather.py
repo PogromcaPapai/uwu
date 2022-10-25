@@ -47,9 +47,9 @@ def forecast(lat: float, lon: float, moment: datetime):
     if frcsts[0]['dt'] > moment.timestamp():
         return None
     return next(({
-        "name": i['weather']['main'],
-        "code": i['weather']['id'],
-        "description": i['weather']['description'],
+        "name": i['weather'][0]['main'],
+        "code": i['weather'][0]['id'],
+        "description": i['weather'][0]['description'],
         
         "wind_speed": i["wind"]["speed"],
         "wind_gust": i["wind"]["gust"],
