@@ -8,7 +8,7 @@ from libs.weather import get_alerts, forecast
 from models import Preference, Place, Attendence
 from uvicorn import run
 
-from services.libs.commons import middle
+from libs.commons import middle
 
 app = FastAPI()
 
