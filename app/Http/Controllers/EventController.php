@@ -58,7 +58,7 @@ class EventController extends Controller
     {
         // Zbieranie danych o wydarzeniach w których uczestniczy użytkownik
         $data = Attendance::join('events', 'events.id', '=', 'attendances.event')
-            ->where('attendances.user_id', '=', Auth::id())
+            ->where('attendances.user', '=', Auth::id())
             ->join('places', 'places.id', '=', 'events.place')
             ->get(['title', 'start', 'end', 'is_admin', 'name', 'powiat', 'event', 'description', 'wojew'])
             ->sortBy('start');
@@ -134,7 +134,7 @@ class EventController extends Controller
         Attendance::create([
             'is_admin'    => TRUE,
             'event'    => $event->id,
-            'user_id'    => Auth::id(),
+            'user'    => Auth::id(),
         ]);
 
         // Zapisanie zaproszonych użytkowników jako uczestników
@@ -144,7 +144,7 @@ class EventController extends Controller
             Attendance::create([
                 'is_admin'    => false,
                 'event'    => $event->id,
-                'user_id'    => $user,
+                'user'    => $user,
             ]);
         }
         return redirect('/events/index');
@@ -159,7 +159,7 @@ class EventController extends Controller
     public function edit(int $id)
     {
         // Zebranie wydarzeń
-        $data = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user_id', '=', Auth::id())
+        $data = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user', '=', Auth::id())
             ->join('places', 'events.place', '=', 'places.id');
 
         if ($data->where('events.id', $id)->count() > 0) {
@@ -170,7 +170,7 @@ class EventController extends Controller
             else $editable = 'readonly';
 
             // Utworzenie listy zaproszonych użytkowników
-            $invites_arr = Attendance::where('event', '=', $id)->where('user_id', '!=', Auth::id())->join('users', 'user_id', '=', 'users.id')->pluck('email')->toArray();
+            $invites_arr = Attendance::where('event', '=', $id)->where('user', '!=', Auth::id())->join('users', 'user', '=', 'users.id')->pluck('email')->toArray();
             $invites = join(", ", $invites_arr);
 
             return view('events/edit', ['event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true]);
@@ -189,7 +189,7 @@ class EventController extends Controller
     public function update(EventForm $request, int $id)
     {
         // Zebranie wydarzeń
-        $events = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user_id', '=', Auth::id())->where('events.id', $id);
+        $events = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user', '=', Auth::id())->where('events.id', $id);
         if ($events->where('events.id', $id)->count() > 0) {
             if ($events->first()->is_admin) {
                 // Sprawdzanie, czy id miejsca powinno być zmienione
@@ -205,7 +205,7 @@ class EventController extends Controller
                 ]);
 
                 // Aktualizacja użytkowników uczestniczących w wydarzeniu
-                Attendance::where('event', '=', $id)->where('user_id', '!=', Auth::id())->delete();
+                Attendance::where('event', '=', $id)->where('user', '!=', Auth::id())->delete();
                 $mails = explode(", ", $request->invites);
                 $users = User::whereIn("email", $mails)->get('id');
                 foreach ($users as $user) {
@@ -213,7 +213,7 @@ class EventController extends Controller
                     Attendance::create([
                         'is_admin'    => false,
                         'event'    => $id,
-                        'user_id'    => $user->id,
+                        'user'    => $user->id,
                     ]);
                 }
                 return redirect('/events/index');
@@ -234,7 +234,7 @@ class EventController extends Controller
     public function destroy(int $id)
     {
         // Usuwanie uczestnictwa w wydarzeniu
-        Attendance::where('user_id', '=', Auth::id())
+        Attendance::where('user', '=', Auth::id())
             ->where('event', '=', $id)
             ->delete();
             

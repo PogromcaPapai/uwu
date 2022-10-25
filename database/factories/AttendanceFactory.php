@@ -19,7 +19,7 @@ class AttendanceFactory extends Factory
         return [
             "is_admin"  => random_int(0, 1),
             "event"  => Event::all()->random()->id,
-            "user_id"   => User::all()->random()->id,
+            "user"   => User::all()->random()->id,
         ];
     }
 }
