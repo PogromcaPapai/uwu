@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Place;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,7 @@ class EventFactory extends Factory
             'title' => $this->faker->sentence,
             'start' => $start,
             'end'   => $end,
-            'place'   => 10,
+            'place'   => Place::all()->random()->id,
             'description' => $this->faker->paragraph()
         ];
     }
