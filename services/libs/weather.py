@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from urllib.request import urlopen
 from json import load as json_load
 from cachetools import TTLCache, cached
@@ -40,7 +40,10 @@ def _forecast(lat:float, lon:float):
     contents = json_load(urlopen(url))
     return contents['list']
 
-def forecast(lat: float, lon: float, moment: datetime):
+def forecast(lat: float, lon: float, moment: date|datetime):
+    if isinstance(moment, date):
+        moment = datetime.combine(moment, datetime.min.time())
+        
     frcsts = _forecast(lat, lon)
     if frcsts[0]['dt'] > moment.timestamp():
         return None
