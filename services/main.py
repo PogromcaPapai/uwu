@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 from fastapi import FastAPI
 
-from services.database import engine
+from database import engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from services.libs.weather import get_alerts, forecast
+from libs.weather import get_alerts, forecast
 from models import Preference
 def generate_tips(forecast):
     pass
