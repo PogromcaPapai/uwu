@@ -40,7 +40,7 @@ class CreatePlacesTable extends Migration
                 'lat' => $value[5],
                 'lon' => $value[6],
             ]);
-            $value = fgetcsv($file, 0, ';');
+            $value = fgetcsv($file, 0, ',');
         }
         fclose($file);
     }

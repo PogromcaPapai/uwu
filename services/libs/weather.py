@@ -46,10 +46,17 @@ def forecast(lat: float, lon: float, moment: datetime):
     frcsts = _forecast(lat, lon)
     if frcsts[0]['dt'] > moment.timestamp():
         return None
-    return next(
-        (i["main"] for i in frcsts if i['dt'] > (moment - timedelta(hours=3)).timestamp()), 
-        None
-    )
+    return next(({
+        "name": i['weather']['main'],
+        "code": i['weather']['id'],
+        "description": i['weather']['description'],
+        
+        "wind_speed": i["wind"]["speed"],
+        "wind_gust": i["wind"]["gust"],
+        
+        "temp_min": i["main"]["temp_min"],
+        "temp_max": i["main"]["temp_max"],
+        "temp_feels": i["main"]["feels_like"],
+        "pressure": i["main"]["pressure"]
+    } for i in frcsts if i['dt'] > (moment - timedelta(hours=3)).timestamp()), None)
     
-def forecast_for_user(user, lat: float, lon: float, moment: datetime, delta_time=timedelta(days=1)):
-    setting = user.preferences
