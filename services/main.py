@@ -34,24 +34,24 @@ def check(forecast, preferences):
     # Temperature
     if forecast['temp'] < preferences['temp_min']:
         yield 'temperature low'
-   
+
     if forecast['temp'] > preferences['temp_max']:
         yield 'temperature high'
-        
+
     #Pressure
     if forecast['pressure'] < preferences['pressure_min']:
         yield 'pressure low'
-   
+
     if forecast['pressure'] > preferences['pressure_max']:
         yield 'pressure high'
-        
+
     if preferences['sun'] and forecast['name'] == "Clear":
         yield 'sun'
     elif preferences['cloudy'] and forecast['code'] > 800:
         yield 'cloudy'
     elif preferences['light_rain'] and (group == 3 or forecast['code'] == 500):
         yield 'light rain'
-    elif preferences['heavy_rain'] and group in (2,5) and forecast['code'] != 500:
+    elif preferences['heavy_rain'] and group in {2, 5} and forecast['code'] != 500:
         yield 'heavy rain'
     elif preferences['snow'] and group == 6:
         yield 'snow'

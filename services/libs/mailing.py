@@ -1,5 +1,5 @@
 from envelopes import GMailSMTP, Envelope
-from commons import CONFIG
+from libs.commons import CONFIG
     
 client = GMailSMTP(CONFIG['gmail_address'], CONFIG['gmail_password'])
 

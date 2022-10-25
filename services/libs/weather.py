@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from urllib.request import urlopen
 from json import load as json_load
 from cachetools import TTLCache, cached
-from commons import CONFIG
+from libs.commons import CONFIG
 
 TIME_FORMAT = f = "%Y-%m-%d %H:%M:%S.%f"
 
