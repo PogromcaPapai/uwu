@@ -16,12 +16,12 @@ async def _alerts(voivodeship: str, type_: str = "meteo"):
 
 @app.get("/forecast/geo/{lat}-{lon}")
 async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
-    moment = moment or datetime.now()
+    moment = moment or datetime.now() + timedelta(hours=4)
     return forecast(lat, lon, moment)
 
 @app.get("/forecast/place/{place_id}")
 async def _forecast_place(place_id: int, moment: datetime | None = None):
-    moment = moment or datetime.now()
+    moment = moment or datetime.now() + timedelta(hours=4)
     query = select(Place).where(Place.id==place_id)
     with Session(engine) as db:
         place = db.scalar(query)
