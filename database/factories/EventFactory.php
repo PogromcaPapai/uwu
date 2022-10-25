@@ -28,8 +28,8 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $start = randomDate('2021-12-01', '2022-01-31');
-        $end = randomDate($start, '2022-01-31');
+        $start = randomDate('2022-10-25', '2022-10-31');
+        $end = randomDate($start, '2022-10-31');
         return [
             'title' => $this->faker->sentence,
             'start' => $start,

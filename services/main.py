@@ -66,7 +66,7 @@ def forecast_attendence(attend_id:int):
         event = attendence.event_
         moment = middle(event.start, event.end)
 
-        if (weather := forecast_place(event.place, moment)) is None: return None
+        if (weather := forecast_place(event.place, moment)) is None: return []
 
     return {
         "forecast": weather, 
