@@ -5,18 +5,27 @@ from database import engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast
-from models import Preference
+from models import Preference, Place
 from uvicorn import run
 
 app = FastAPI()
 
-@app.get("/services/alerts/{voivodeship}")
+@app.get("/alerts/{voivodeship}")
 async def _alerts(voivodeship: str, type_: str = "meteo"):
     return get_alerts(voivodeship, type_)
 
-@app.get("/services/forecast/{lat}-{lon}/{moment}")
-async def _forecast(lat: float, lon: float, moment: datetime):
+@app.get("/forecast/geo/{lat}-{lon}")
+async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
+    moment = moment or datetime.now()
     return forecast(lat, lon, moment)
+
+@app.get("/forecast/place/{place_id}")
+async def _forecast_place(place_id: int, moment: datetime | None = None):
+    moment = moment or datetime.now()
+    query = select(Place).where(id=place_id)
+    with Session(engine) as db:
+        place = db.scalar(query).one()
+    return forecast(place.lat, place.lon, moment)
 
 def forecast_for_user(user:int, lat: float, lon: float, moment: datetime):
     query = select(Preference).where(user_id=user)
@@ -26,4 +35,4 @@ def forecast_for_user(user:int, lat: float, lon: float, moment: datetime):
     
     # alerts = {
         
-    # }
+    # 
