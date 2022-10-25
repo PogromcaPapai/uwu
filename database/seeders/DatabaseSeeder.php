@@ -11,7 +11,7 @@ use App\Models\Warning;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-define("SMALL_PLACES", true)
+define("SMALL_PLACES", true);
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
                 'lon' => $value[6],
             ]);
             $value = fgetcsv($file, 0, ';');
-            
+
             $counter++;
             if ($counter >=1000 && SMALL_PLACES) break;
         }
