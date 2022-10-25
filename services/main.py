@@ -22,13 +22,13 @@ async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
 @app.get("/forecast/place/{place_id}")
 async def _forecast_place(place_id: int, moment: datetime | None = None):
     moment = moment or datetime.now()
-    query = select(Place).where(id=place_id)
+    query = select(Place).where(Place.id==place_id)
     with Session(engine) as db:
         place = db.scalar(query).one()
     return forecast(place.lat, place.lon, moment)
 
 def forecast_for_user(user:int, lat: float, lon: float, moment: datetime):
-    query = select(Preference).where(user_id=user)
+    query = select(Preference).where(Preference.user_id==user)
     with Session(engine) as db:
         pref = db.scalar(query).one()
     if (frc := forecast(lat, lon, moment)) is None: return None
