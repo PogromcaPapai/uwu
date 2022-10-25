@@ -5,6 +5,7 @@ from database import engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast
+from libs.commons import DEBUG
 from models import Preference, Place, Attendence
 from uvicorn import run
 
@@ -29,19 +30,20 @@ def forecast_place(place_id: int, moment: datetime | None = None):
     return forecast(place.lat, place.lon, moment)
 
 def check(weather, preferences):
+    preferences = preferences or DEBUG['debug_pref']
     group=int(str(weather['code'])[0])
     # Temperature
-    if weather['temp'] < preferences['temp_min']:
+    if preferences['temp_min'] is not None and weather['temp'] < preferences['temp_min']:
         yield 'temperature low'
 
-    if weather['temp'] > preferences['temp_max']:
+    if preferences['temp_max'] is not None and weather['temp'] > preferences['temp_max']:
         yield 'temperature high'
 
     #Pressure
-    if weather['pressure'] < preferences['pressure_min']:
+    if preferences['pressure_min'] is not None and weather['pressure'] < preferences['pressure_min']:
         yield 'pressure low'
 
-    if weather['pressure'] > preferences['pressure_max']:
+    if preferences['pressure_max'] is not None and weather['pressure'] > preferences['pressure_max']:
         yield 'pressure high'
 
     if preferences['sun'] and weather['name'] == "Clear":
