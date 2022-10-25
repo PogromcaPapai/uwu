@@ -29,6 +29,6 @@ if __name__=="__main__":
     metadata.drop_all(engine)
     metadata.create_all(engine)
     try:
-        os.system("php ../artisan db:seed")
+        os.system("cd .. && php artisan db:seed && cd services")
     except Exception:
         print("I wasn't able to seed the DB")
