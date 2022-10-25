@@ -24,13 +24,13 @@ async def _forecast_place(place_id: int, moment: datetime | None = None):
     moment = moment or datetime.now()
     query = select(Place).where(Place.id==place_id)
     with Session(engine) as db:
-        place = db.scalar(query).one()
+        place = db.scalar(query)
     return forecast(place.lat, place.lon, moment)
 
 def forecast_for_user(user:int, lat: float, lon: float, moment: datetime):
     query = select(Preference).where(Preference.user_id==user)
     with Session(engine) as db:
-        pref = db.scalar(query).one()
+        pref = db.scalar(query)
     if (frc := forecast(lat, lon, moment)) is None: return None
     
     # alerts = {
