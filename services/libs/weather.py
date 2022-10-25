@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from json import load as json_load
 from cachetools import TTLCache, cached
 
-with open("services/config.json") as f:
+with open("config.json") as f:
     CONFIG = json_load(f)
 
 TIME_FORMAT = f = "%Y-%m-%d %H:%M:%S.%f"
