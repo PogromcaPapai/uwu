@@ -64,7 +64,7 @@ def forecast_attendence(attend_id:int):
         query = select(Attendence).where(Attendence.id==attend_id)
         attendence = db.scalar(query)
         preference = attendence.user_.preference_
-        moment = middle(attendence.start, attendence.end)
+        moment = middle(attendence.event_.start, attendence.event_.end)
 
         if (weather := _forecast_place(attendence.place, moment)) is None: return None
 
