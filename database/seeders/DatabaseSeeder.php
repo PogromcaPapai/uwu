@@ -11,6 +11,8 @@ use App\Models\Warning;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
+define("SMALL_PLACES", true)
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -23,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // Uzupełnienie tabeli na podstawie listy miejsc
         $file = fopen('database\miejsca.csv', 'r');
         $value = fgetcsv($file, 0, ';');
+        $counter = 0
         while ($value)
         {
             DB::table('places')->insert([
@@ -35,6 +38,9 @@ class DatabaseSeeder extends Seeder
                 'lon' => $value[6],
             ]);
             $value = fgetcsv($file, 0, ';');
+            
+            $counter++;
+            if ($counter >=1000 && SMALL_PLACES) break;
         }
         fclose($file);
         DB::table('users')->insert([
