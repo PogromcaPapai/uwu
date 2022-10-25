@@ -43,22 +43,22 @@
                             <div class="space-y-2">
 
                                 {{-- Informacje o aktualnej pogodzie --}}
-                                @if (!is_null($weather[$item->event_id]))
+                                @if (!is_null($weather[$item->event]))
                                     <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
                                         <h3 class="font-bold">{{ __('app.forecast') }} -
-                                            {{ $weather[$item->event_id]['stacja'] }}
+                                            {{ $weather[$item->event]['stacja'] }}
                                         </h3>
                                         <p>Temperatura w tym punkcie wynosiła o
-                                            {{ $weather[$item->event_id]['godzina_pomiaru'] }}:00
-                                            {{ $weather[$item->event_id]['temperatura'] }} stopni, wiatr wiał z
-                                            prędkością {{ $weather[$item->event_id]['predkosc_wiatru'] }} km/h, a
-                                            suma opadów wyniosła {{ $weather[$item->event_id]['suma_opadu'] }} mm.
+                                            {{ $weather[$item->event]['godzina_pomiaru'] }}:00
+                                            {{ $weather[$item->event]['temperatura'] }} stopni, wiatr wiał z
+                                            prędkością {{ $weather[$item->event]['predkosc_wiatru'] }} km/h, a
+                                            suma opadów wyniosła {{ $weather[$item->event]['suma_opadu'] }} mm.
                                         </p>
                                     </div>
                                 @endif
 
                                 {{-- Ostrzeżenia pogodowe --}}
-                                @foreach ($prog[$item->event_id] as $warn)
+                                @foreach ($prog[$item->event] as $warn)
                                     <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4"
                                         role="alert">
                                         <h3 class="font-bold">{{ $warn['event'] }} ({{ __('app.level') }}
@@ -72,7 +72,7 @@
                             {{-- Przycisk --}}
                             <div class="mt-6 "><a
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                                    href="/events/edit/{{ $item->event_id }}">
+                                    href="/events/edit/{{ $item->event }}">
                                     {{ __('app.view') }}
                                 </a></div>
                         </div>

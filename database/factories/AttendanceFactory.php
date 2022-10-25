@@ -18,7 +18,7 @@ class AttendanceFactory extends Factory
     {
         return [
             "is_admin"  => random_int(0, 1),
-            "event_id"  => Event::all()->random()->id,
+            "event"  => Event::all()->random()->id,
             "user_id"   => User::all()->random()->id,
         ];
     }

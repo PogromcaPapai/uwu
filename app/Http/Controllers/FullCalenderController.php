@@ -15,7 +15,7 @@ class FullCalenderController extends Controller
       GET
       */
 		if ($request->ajax()) {
-			$found = Event::join('attendances', 'events.id', '=', 'attendances.event_id')
+			$found = Event::join('attendances', 'events.id', '=', 'attendances.event')
 				->where('user_id', '=', Auth::id());
 			$data = $found->whereDate('start', '>=', $request->start)
 				->whereDate('end',   '<=', $request->end)
@@ -31,7 +31,7 @@ class FullCalenderController extends Controller
     */
 	{
 		if ($request->ajax()) {
-			$events = Event::join('attendances', 'events.id', '=', 'attendances.event_id')->where('attendances.user_id', '=', Auth::id())->where('events.id', $request->id);
+			$events = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user_id', '=', Auth::id())->where('events.id', $request->id);
 			if ($events->where('events.id', $request->id)->count() > 0) {
 				if ($events->first()->is_admin) {
 					Event::where('id', $request->id)->update([

@@ -57,10 +57,10 @@ class EventController extends Controller
     public function index(Request $request)
     {
         // Zbieranie danych o wydarzeniach w których uczestniczy użytkownik
-        $data = Attendance::join('events', 'events.id', '=', 'attendances.event_id')
+        $data = Attendance::join('events', 'events.id', '=', 'attendances.event')
             ->where('attendances.user_id', '=', Auth::id())
             ->join('places', 'places.id', '=', 'events.place')
-            ->get(['title', 'start', 'end', 'is_admin', 'name', 'powiat', 'event_id', 'description', 'wojew'])
+            ->get(['title', 'start', 'end', 'is_admin', 'name', 'powiat', 'event', 'description', 'wojew'])
             ->sortBy('start');
 
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
@@ -68,7 +68,7 @@ class EventController extends Controller
         $weather = [];
         foreach ($data as $event) {
             // Zbieranie informacji o ostrzeżeniach
-            $prognosis[$event->event_id] = [];
+            $prognosis[$event->event] = [];
 
             // // Komunikacja z Plumber API
             // $found = Http::get('http://127.0.0.1:3447/warn?place=' . $event->powiat);
@@ -76,15 +76,15 @@ class EventController extends Controller
             // if ($found->successful()) {
             //     foreach ($found->json() as $warn) {
             //         if (EventController::overlap($event->start, $warn["starttime"][0], $event->end, $warn["endtime"][0]))
-            //             array_push($prognosis[$event->event_id], $warn);
+            //             array_push($prognosis[$event->event], $warn);
             //     }
             // }
 
             // Zbieranie informacji o aktualnej pogodzie z danych IMGW
             $now = (new DateTime())->format('Y-m-d H:i:s');
             if (EventController::overlap($event->start, $now, $event->end, $now)) {
-                $weather[$event->event_id] = Http::get('https://danepubliczne.imgw.pl/api/data/synop/station/' . STACJE[$event->wojew])->json();
-            } else $weather[$event->event_id] = null;
+                $weather[$event->event] = Http::get('https://danepubliczne.imgw.pl/api/data/synop/station/' . STACJE[$event->wojew])->json();
+            } else $weather[$event->event] = null;
         }
         return view('events/index', ['events' => $data, "prog" => $prognosis, "weather" => $weather]);
     }
@@ -133,7 +133,7 @@ class EventController extends Controller
         // Zapisanie autora wydarzenia jako administratora
         Attendance::create([
             'is_admin'    => TRUE,
-            'event_id'    => $event->id,
+            'event'    => $event->id,
             'user_id'    => Auth::id(),
         ]);
 
@@ -143,7 +143,7 @@ class EventController extends Controller
             if ($user->id == Auth::id()) continue; 
             Attendance::create([
                 'is_admin'    => false,
-                'event_id'    => $event->id,
+                'event'    => $event->id,
                 'user_id'    => $user,
             ]);
         }
@@ -159,7 +159,7 @@ class EventController extends Controller
     public function edit(int $id)
     {
         // Zebranie wydarzeń
-        $data = Event::join('attendances', 'events.id', '=', 'attendances.event_id')->where('attendances.user_id', '=', Auth::id())
+        $data = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user_id', '=', Auth::id())
             ->join('places', 'events.place', '=', 'places.id');
 
         if ($data->where('events.id', $id)->count() > 0) {
@@ -170,7 +170,7 @@ class EventController extends Controller
             else $editable = 'readonly';
 
             // Utworzenie listy zaproszonych użytkowników
-            $invites_arr = Attendance::where('event_id', '=', $id)->where('user_id', '!=', Auth::id())->join('users', 'user_id', '=', 'users.id')->pluck('email')->toArray();
+            $invites_arr = Attendance::where('event', '=', $id)->where('user_id', '!=', Auth::id())->join('users', 'user_id', '=', 'users.id')->pluck('email')->toArray();
             $invites = join(", ", $invites_arr);
 
             return view('events/edit', ['event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true]);
@@ -189,7 +189,7 @@ class EventController extends Controller
     public function update(EventForm $request, int $id)
     {
         // Zebranie wydarzeń
-        $events = Event::join('attendances', 'events.id', '=', 'attendances.event_id')->where('attendances.user_id', '=', Auth::id())->where('events.id', $id);
+        $events = Event::join('attendances', 'events.id', '=', 'attendances.event')->where('attendances.user_id', '=', Auth::id())->where('events.id', $id);
         if ($events->where('events.id', $id)->count() > 0) {
             if ($events->first()->is_admin) {
                 // Sprawdzanie, czy id miejsca powinno być zmienione
@@ -205,14 +205,14 @@ class EventController extends Controller
                 ]);
 
                 // Aktualizacja użytkowników uczestniczących w wydarzeniu
-                Attendance::where('event_id', '=', $id)->where('user_id', '!=', Auth::id())->delete();
+                Attendance::where('event', '=', $id)->where('user_id', '!=', Auth::id())->delete();
                 $mails = explode(", ", $request->invites);
                 $users = User::whereIn("email", $mails)->get('id');
                 foreach ($users as $user) {
                     if ($user->id == Auth::id()) continue; 
                     Attendance::create([
                         'is_admin'    => false,
-                        'event_id'    => $id,
+                        'event'    => $id,
                         'user_id'    => $user->id,
                     ]);
                 }
@@ -235,12 +235,12 @@ class EventController extends Controller
     {
         // Usuwanie uczestnictwa w wydarzeniu
         Attendance::where('user_id', '=', Auth::id())
-            ->where('event_id', '=', $id)
+            ->where('event', '=', $id)
             ->delete();
             
         // Usuwanie wydarzenia, jeśli nie posiada ono administratora 
         if (
-            Attendance::where('event_id', '=', $id)
+            Attendance::where('event', '=', $id)
             ->where('is_admin', '=', '1')
             ->count() == 0
         ) {

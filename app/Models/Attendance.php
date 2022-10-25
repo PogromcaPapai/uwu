@@ -11,7 +11,7 @@ class Attendance extends Model
 
     protected $fillable = [
         'user_id',
-        'event_id',
+        'event',
         'is_admin',
     ];
 }
