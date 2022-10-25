@@ -32,7 +32,7 @@ t_password_resets = Table(
     'password_resets', metadata,
     Column('email', String(255, 'utf8mb4_unicode_ci'), nullable=False, index=True),
     Column('token', String(255, 'utf8mb4_unicode_ci'), nullable=False),
-    Column('created_at', TIMESTAMP)
+    Column('created_at', TIMESTAMP, server_default=text("current_timestamp()"))
 )
 
 
@@ -49,7 +49,7 @@ class PersonalAccessToken(Base):
     token = Column(String(64, 'utf8mb4_unicode_ci'), nullable=False, unique=True)
     abilities = Column(Text(collation='utf8mb4_unicode_ci'))
     last_used_at = Column(TIMESTAMP)
-    created_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
     updated_at = Column(TIMESTAMP)
 
 
@@ -75,7 +75,7 @@ class User(Base):
     email_verified_at = Column(TIMESTAMP)
     password = Column(String(255, 'utf8mb4_unicode_ci'), nullable=False)
     remember_token = Column(String(100, 'utf8mb4_unicode_ci'))
-    created_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
     updated_at = Column(TIMESTAMP)
 
 
@@ -87,18 +87,22 @@ class Event(Base):
     start = Column(Date, nullable=False)
     end = Column(Date, nullable=False)
     description = Column(Text(collation='utf8mb4_unicode_ci'), nullable=False)
-    created_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
     updated_at = Column(TIMESTAMP)
     place = Column(ForeignKey('places.id', ondelete='CASCADE'), nullable=False, index=True)
 
-    place1 = relationship('Place')
+    place_ = relationship('Place')
 
 
-t_attendances = Table(
-    'attendances', metadata,
-    Column('is_admin', TINYINT(1), nullable=False),
-    Column('user_id', ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True),
-    Column('event_id', ForeignKey('events.id', ondelete='CASCADE'), nullable=False, index=True),
-    Column('created_at', TIMESTAMP),
-    Column('updated_at', TIMESTAMP)
-)
+class Attendence(Base):
+    __tablename__ = 'attendances'
+    
+    id = Column(BIGINT(20), primary_key=True)
+    is_admin = Column(TINYINT(1), nullable=False)
+    user = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True)
+    event = Column(ForeignKey('events.id', ondelete='CASCADE'), nullable=False, index=True)
+    created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
+    updated_at = Column(TIMESTAMP)
+    
+    event_ = relationship('Event')
+    user_ = relationship('User')

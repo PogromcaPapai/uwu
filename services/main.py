@@ -5,8 +5,10 @@ from database import engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast
-from models import Preference, Place
+from models import Preference, Place, Attendence
 from uvicorn import run
+
+from services.libs.commons import middle
 
 app = FastAPI()
 
@@ -27,12 +29,46 @@ async def _forecast_place(place_id: int, moment: datetime | None = None):
         place = db.scalar(query)
     return forecast(place.lat, place.lon, moment)
 
-def forecast_for_user(user:int, lat: float, lon: float, moment: datetime):
-    query = select(Preference).where(Preference.user_id==user)
-    with Session(engine) as db:
-        pref = db.scalar(query)
-    if (frc := forecast(lat, lon, moment)) is None: return None
-    
-    # alerts = {
+def check(forecast, preferences):
+    group=int(str(forecast['code'])[0])
+    # Temperature
+    if forecast['temp'] < preferences['temp_min']:
+        yield 'temperature low'
+   
+    if forecast['temp'] > preferences['temp_max']:
+        yield 'temperature high'
         
-    # 
+    #Pressure
+    if forecast['pressure'] < preferences['pressure_min']:
+        yield 'pressure low'
+   
+    if forecast['pressure'] > preferences['pressure_max']:
+        yield 'pressure high'
+        
+    if preferences['sun'] and forecast['name'] == "Clear":
+        yield 'sun'
+    elif preferences['cloudy'] and forecast['code'] > 800:
+        yield 'cloudy'
+    elif preferences['light_rain'] and (group == 3 or forecast['code'] == 500):
+        yield 'light rain'
+    elif preferences['heavy_rain'] and group in (2,5) and forecast['code'] != 500:
+        yield 'heavy rain'
+    elif preferences['snow'] and group == 6:
+        yield 'snow'
+    elif group == 7:
+        yield 'atmosphere'
+
+@app.get("/forecast/attend/{attend_id}")
+def forecast_attendence(attend_id:int):
+    query = select(Attendence).where(Attendence.id==attend_id)
+    with Session(engine) as db:
+        attendence = db.scalar(query)
+    preference = attendence.user_.preference_
+    moment = middle(attendence.start, attendence.end)
+
+    if (weather := _forecast_place(attendence.place, moment)) is None: return None
+
+    return {
+        "forecast": weather, 
+        "warns": list(check(weather, preference))
+    }

@@ -2,9 +2,7 @@ from datetime import datetime, timedelta
 from urllib.request import urlopen
 from json import load as json_load
 from cachetools import TTLCache, cached
-
-with open("config.json") as f:
-    CONFIG = json_load(f)
+from commons import CONFIG
 
 TIME_FORMAT = f = "%Y-%m-%d %H:%M:%S.%f"
 
@@ -38,7 +36,7 @@ def get_alerts(voivodeship: str, type_: str = 'meteo'):
      
 @cached(cache=TTLCache(maxsize=1024, ttl=60*60*3))   
 def _forecast(lat:float, lon:float):
-    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={CONFIG['free_weather_key']}&lang=pl"
+    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={CONFIG['free_weather_key']}&lang=pl&units=metric"
     contents = json_load(urlopen(url))
     return contents['list']
 
@@ -56,7 +54,7 @@ def forecast(lat: float, lon: float, moment: datetime):
         
         "temp_min": i["main"]["temp_min"],
         "temp_max": i["main"]["temp_max"],
-        "temp_feels": i["main"]["feels_like"],
+        "temp": i["main"]["feels_like"],
         "pressure": i["main"]["pressure"]
     } for i in frcsts if i['dt'] > (moment - timedelta(hours=3)).timestamp()), None)
     

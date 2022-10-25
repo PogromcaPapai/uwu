@@ -1,8 +1,9 @@
+import os
 from laravel_export import *
 from sqlalchemy import Column, Integer, ForeignKey, Boolean, Time
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from database import engine
-    
+
 class Preference(Base):
     __tablename__ = "preferences"
 
@@ -17,13 +18,17 @@ class Preference(Base):
     heavy_rain = Column(Boolean)
     snow = Column(Boolean)
     send_summary = Column(Time, nullable=True)
-    
-    default_place_id = Column(ForeignKey('places.id'))
-    user_id = Column(ForeignKey('users.id'))
-    
-    user = relationship("User")
-    default_place = relationship("Place")
-   
+
+    default_place = Column(ForeignKey('places.id'))
+    user = Column(ForeignKey('users.id'))
+
+    user_ = relationship("User", backref=backref("preference_", uselist=False))
+    default_place_ = relationship("Place")
+
 if __name__=="__main__": 
     metadata.drop_all(engine)
     metadata.create_all(engine)
+    try:
+        os.system("php ../artisan db:seed")
+    except Exception:
+        print("I wasn't able to seed the DB")

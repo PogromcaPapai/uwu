@@ -14,9 +14,10 @@ class CreateAttendanceTable extends Migration
     public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
+            $table->id();
             $table->boolean('is_admin');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('event_id')->references('id')->on('events')->onDelete('cascade');
+            $table->foreignId('user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('event')->references('id')->on('events')->onDelete('cascade');
             $table->timestamps();
 
             // $table->unique(['user_id', 'event_id']); // Ze względu na konstrukcję seedera, należy tą część wyłączyć.

@@ -1,8 +1,5 @@
 from envelopes import GMailSMTP, Envelope
-from json import load as json_load
-
-with open("config.json") as f:
-    CONFIG = json_load(f)
+from commons import CONFIG
     
 client = GMailSMTP(CONFIG['gmail_address'], CONFIG['gmail_password'])
 
