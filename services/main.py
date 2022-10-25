@@ -72,5 +72,6 @@ def forecast_attendence(attend_id:int):
 
     return {
         "forecast": weather, 
-        "warns": list(check(weather, preference))
+        "warns": list(check(weather, preference)),
+        "datetime":moment
     }
