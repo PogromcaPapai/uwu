@@ -30,7 +30,7 @@ def forecast_place(place_id: int, moment: datetime | None = None):
     return forecast(place.lat, place.lon, moment)
 
 def check(weather, preferences):
-    preferences = preferences or CONFIG['debug_pref']
+    preferences = preferences or CONFIG['default_pref']
     group=int(str(weather['code'])[0])
     # Temperature
     if preferences['temp_min'] is not None and weather['temp'] < preferences['temp_min']:
