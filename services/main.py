@@ -36,14 +36,14 @@ def check(weather, preferences):
     if preferences['temp_min'] is not None and weather['temp'] < preferences['temp_min']:
         yield 'temperature low'
 
-    if preferences['temp_max'] is not None and weather['temp'] > preferences['temp_max']:
+    if preferences['max_temp'] is not None and weather['temp'] > preferences['max_temp']:
         yield 'temperature high'
 
     #Pressure
-    if preferences['pressure_min'] is not None and weather['pressure'] < preferences['pressure_min']:
+    if preferences['min_pressure'] is not None and weather['pressure'] < preferences['min_pressure']:
         yield 'pressure low'
 
-    if preferences['pressure_max'] is not None and weather['pressure'] > preferences['pressure_max']:
+    if preferences['max_pressure'] is not None and weather['pressure'] > preferences['max_pressure']:
         yield 'pressure high'
 
     if preferences['sun'] and weather['name'] == "Clear":
