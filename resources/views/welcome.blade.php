@@ -10,7 +10,7 @@
                     <article class="flex flex-row p-3 flex-wrap">
                         <div class="p-4 basis-1/2">
                             <h2 class="font-black text-4xl uppercase py-3">Co robimy?</h2>
-                            <p class="text-gray-800 text-4xl text-justify">uvvv to kalendarz z informacjami o anomaliach
+                            <p class="text-gray-800 text-4xl text-justify">uwu to kalendarz z informacjami o anomaliach
                                 pogodowych.
                             </p>
                         </div>
