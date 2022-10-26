@@ -51,7 +51,7 @@ class EventController extends Controller
             ->where('attendances.user', '=', Auth::id())
             ->join('places', 'places.id', '=', 'events.place')
             ->get(['title', 'start', 'end', 'start_time', 'end_time', 'is_admin', 'name', 'powiat', 'event', 'description', 'wojew'])
-            ->sortBy('start');
+            ->sortBy('start', 'start_time');
 
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
         $prognosis = [];
