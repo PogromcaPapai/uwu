@@ -43,30 +43,26 @@
                             <div class="space-y-2">
 
                                 {{-- Informacje o aktualnej pogodzie --}}
-                                @if (!is_null($weather[$item->event]))
-                                    <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
-                                        <h3 class="font-bold">{{ __('app.forecast') }} -
-                                            {{ $weather[$item->event]['stacja'] }}
-                                        </h3>
-                                        <p>Temperatura w tym punkcie wynosiła o
-                                            {{ $weather[$item->event]['godzina_pomiaru'] }}:00
-                                            {{ $weather[$item->event]['temperatura'] }} stopni, wiatr wiał z
-                                            prędkością {{ $weather[$item->event]['predkosc_wiatru'] }} km/h, a
-                                            suma opadów wyniosła {{ $weather[$item->event]['suma_opadu'] }} mm.
-                                        </p>
-                                    </div>
-                                @endif
+                                <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
+                                    <h3 class="font-bold">{{ __('app.forecast') }} -
+                                        stacja
+                                    </h3>
+                                    <p>Temperatura w tym punkcie wynosiła o
+                                        godzina_pomiaru:
+                                        temperatura stopni, wiatr wiał z
+                                        prędkością predkosc_wiatru km/h, a
+                                        suma opadów wyniosła suma_opadu mm.
+                                    </p>
+                                </div>
 
                                 {{-- Ostrzeżenia pogodowe --}}
-                                @foreach ($prog[$item->event] as $warn)
-                                    <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4"
-                                        role="alert">
-                                        <h3 class="font-bold">{{ $warn['event'] }} ({{ __('app.level') }}
-                                            {{ $warn['lvl'] }})
-                                        </h3>
-                                        <p>{{ $warn['rso'] }}</p>
-                                    </div>
-                                @endforeach
+                                <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4"
+                                    role="alert">
+                                    <h3 class="font-bold">event ({{ __('app.level') }}
+                                        level
+                                    </h3>
+                                    <p>rso</p>
+                                </div>
                             </div>
 
                             {{-- Przycisk --}}

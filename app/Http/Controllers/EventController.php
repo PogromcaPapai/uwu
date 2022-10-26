@@ -56,7 +56,7 @@ class EventController extends Controller
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
         $prognosis = [];
         $weather = [];
-        return view('events/index', $data]);
+        return view('events/index', ['events' => $data]);
     }
 
     /**
