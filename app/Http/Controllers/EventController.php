@@ -50,7 +50,7 @@ class EventController extends Controller
         $data = Attendance::join('events', 'events.id', '=', 'attendances.event')
             ->where('attendances.user', '=', Auth::id())
             ->join('places', 'places.id', '=', 'events.place')
-            ->get(['title', 'start', 'end', 'is_admin', 'name', 'powiat', 'event', 'description', 'wojew'])
+            ->get(['title', 'start', 'end', 'start_time', 'end_time', 'is_admin', 'name', 'powiat', 'event', 'description', 'wojew'])
             ->sortBy('start');
 
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
