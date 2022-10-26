@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
                 'gmina' => $value[2],
                 'powiat'=> $value[3],
                 'wojew' => $value[4],
-                'lat' => $value[5],
-                'lon' => $value[6],
+                'lat' => $value[6],
+                'lon' => $value[5],
             ]);
             $value = fgetcsv($file, 0, ';');
             if ($counter++ >=1000 && SMALL_PLACES) break;
