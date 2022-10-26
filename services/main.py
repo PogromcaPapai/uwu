@@ -14,11 +14,11 @@ from libs.commons import middle
 
 app = FastAPI()
 
-@app.get("/alerts/{voivodeship}")
+@app.get("/alerts/voivodeship/{voivodeship}")
 async def _alerts(voivodeship: str, type_: str = "meteo"):
     return get_alerts(voivodeship, type_)
 
-@app.get("/alerts/{place_id}")
+@app.get("/alerts/place/{place_id}")
 async def _alerts_place(place_id: int, type_: str = "meteo"):
     query = select(Place).where(Place.id==place_id)
     with Session(engine) as db:
