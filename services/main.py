@@ -8,6 +8,7 @@ from libs.weather import get_alerts, forecast
 from libs.commons import CONFIG
 from models import Preference, Place, Attendence, full_date
 from uvicorn import run
+from unidecode import unidecode
 
 from libs.commons import middle
 
@@ -16,6 +17,13 @@ app = FastAPI()
 @app.get("/alerts/{voivodeship}")
 async def _alerts(voivodeship: str, type_: str = "meteo"):
     return get_alerts(voivodeship, type_)
+
+@app.get("/alerts/{place_id}")
+async def _alerts_place(place_id: int, type_: str = "meteo"):
+    query = select(Place).where(Place.id==place_id)
+    with Session(engine) as db:
+        place = db.scalar(query)
+    return get_alerts(unidecode(place.wojew), type_)
 
 @app.get("/forecast/geo/{lat}-{lon}")
 async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
