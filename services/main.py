@@ -67,11 +67,12 @@ def forecast_attendence(attend_id:int):
         preference = attendence.user_.preference_
         event = attendence.event_
         moment = middle(event.start, event.end)
+        meta = moment, event.place_.name, event.place_.desc
 
         if (weather := forecast_place(event.place, moment)) is None: return []
 
     return {
         "forecast": weather, 
         "warns": list(check(weather, preference)),
-        "meta":[moment, event.place_.name]
+        "meta":meta
     }
