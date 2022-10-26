@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'uvvv') }}</title>
+    <title>{{ config('app.name', 'uwu') }}</title>
 
     <link rel="icon"
         href="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-calendar-calendar-kmg-design-flat-kmg-design-35.png"
@@ -37,6 +37,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/getter.js') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased">
