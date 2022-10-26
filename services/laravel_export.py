@@ -1,5 +1,6 @@
 # coding: utf-8
-from sqlalchemy import Column, Date, Float, ForeignKey, Index, String, TIMESTAMP, Table, Text, text
+from datetime import datetime, time
+from sqlalchemy import Column, Date, Float, ForeignKey, Index, String, TIMESTAMP, Table, Text, text, Time
 from sqlalchemy.dialects.mysql import BIGINT, INTEGER, LONGTEXT, TINYINT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -7,6 +8,11 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
+def full_date(event, start = True):
+    if start:
+        return datetime.combine(event.start, event.start_time)
+    else:
+        return datetime.combine(event.end, event.end_time)
 
 class FailedJob(Base):
     __tablename__ = 'failed_jobs'
@@ -85,7 +91,9 @@ class Event(Base):
     id = Column(BIGINT(20), primary_key=True)
     title = Column(String(255, 'utf8mb4_unicode_ci'), nullable=False)
     start = Column(Date, nullable=False)
+    start_time = Column(Time, nullable=False, server_default="'00:00:01'")
     end = Column(Date, nullable=False)
+    end_time = Column(Time, nullable=False, server_default="'23:59:59'")
     description = Column(Text(collation='utf8mb4_unicode_ci'), nullable=False)
     created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
     updated_at = Column(TIMESTAMP)

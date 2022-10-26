@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast
 from libs.commons import CONFIG
-from models import Preference, Place, Attendence
+from models import Preference, Place, Attendence, full_date
 from uvicorn import run
 
 from libs.commons import middle
@@ -66,7 +66,7 @@ def forecast_attendence(attend_id:int):
         attendence = db.scalar(query)
         preference = attendence.user_.preference_
         event = attendence.event_
-        moment = middle(event.start, event.end)
+        moment = middle(full_date(event), full_date(event, start=False))
         meta = moment, event.place_.name, event.place_.desc
 
         if (weather := forecast_place(event.place, moment)) is None: return []

@@ -12,24 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-define("STACJE", [
-    "dolnośląskie" => "wroclaw",
-    "kujawsko-pomorskie" => "torun",
-    "lubelskie" => "lublin",
-    "lubuskie" => "zielona gora",
-    "łódzkie" => "lodz",
-    "małopolskie" => "krakow",
-    "mazowieckie" => "warszawa",
-    "opolskie" => "opole",
-    "podkarpackie" => "rzeszow",
-    "podlaskie" => "bialystok",
-    "pomorskie" => "gdansk",
-    "śląskie" => "katowice",
-    "świętokrzyskie" => "kielce",
-    "warmińsko-mazurskie" => "olsztyn",
-    "wielkopolskie" => "poznan",
-    "zachodniopomorskie" => "szczecin",
-]);
+
 
 class EventController extends Controller
 {
@@ -41,12 +24,19 @@ class EventController extends Controller
      *
      * @return bollean
      */
-    private static function overlap(string $start1, string $start2, string $end1, string $end2,)
+    private static function overlap(Event $ev, DateTime $start2, DateTime $end2)
     {
-        if (new DateTime($start2) >= new DateTime($end1)) {
+        $start1 = $ev->start;
+        $end1 = $ev->end;
+        $start_time = $ev->start_time;
+        $end_time = $ev->end_time;
+
+        $start1->setTime($start_time->format('H'), $start_time->format('i'), $start_time->format('s'));
+        $end1->setTime($end_time->format('H'), $end_time->format('i'), $end_time->format('s'));
+        if ($start2 >= $end1) {
             return false;
         } else {
-            return new DateTime($end2) >= new DateTime($start1);
+            return $end2 >= $start1;
         }
     }
     /**
@@ -66,27 +56,7 @@ class EventController extends Controller
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
         $prognosis = [];
         $weather = [];
-        foreach ($data as $event) {
-            // Zbieranie informacji o ostrzeżeniach
-            $prognosis[$event->event] = [];
-
-            // // Komunikacja z Plumber API
-            // $found = Http::get('http://127.0.0.1:3447/warn?place=' . $event->powiat);
-
-            // if ($found->successful()) {
-            //     foreach ($found->json() as $warn) {
-            //         if (EventController::overlap($event->start, $warn["starttime"][0], $event->end, $warn["endtime"][0]))
-            //             array_push($prognosis[$event->event], $warn);
-            //     }
-            // }
-
-            // Zbieranie informacji o aktualnej pogodzie z danych IMGW
-            $now = (new DateTime())->format('Y-m-d H:i:s');
-            if (EventController::overlap($event->start, $now, $event->end, $now)) {
-                $weather[$event->event] = Http::get('https://danepubliczne.imgw.pl/api/data/synop/station/' . STACJE[$event->wojew])->json();
-            } else $weather[$event->event] = null;
-        }
-        return view('events/index', ['events' => $data, "prog" => $prognosis, "weather" => $weather]);
+        return view('events/index', $data]);
     }
 
     /**
@@ -124,8 +94,10 @@ class EventController extends Controller
         // Zapisywanie danych
         $event = new Event;
         $event->title = $request->title;
-        $event->start =    $request->start;
+        $event->start = $request->start;
+        $event->start_time = $request->start_time;
         $event->end = $request->end;
+        $event->end_time = $request->end_end_time;
         $event->description = is_null($request->description) ? "" : $request->description;
         $event->place = $request->place;
         $event->save();
@@ -140,7 +112,7 @@ class EventController extends Controller
         // Zapisanie zaproszonych użytkowników jako uczestników
         $users = User::whereIn("email", explode(", ", $request->place))->get('id');
         foreach ($users as $user) {
-            if ($user->id == Auth::id()) continue; 
+            if ($user->id == Auth::id()) continue;
             Attendance::create([
                 'is_admin'    => false,
                 'event'    => $event->id,
@@ -194,12 +166,14 @@ class EventController extends Controller
             if ($events->first()->is_admin) {
                 // Sprawdzanie, czy id miejsca powinno być zmienione
                 $place = is_null($request->place) ? $events->where('events.id', $id)->first()->place :  $request->place;
-                
+
                 // Zmiany w danych wydarzenia
                 Event::where('id', $id)->update([
                     'title'        =>    $request->title,
                     'start'        =>    $request->start,
+                    'start_time'     =>    $request->start_time,
                     'end'        =>    $request->end,
+                    'end_time'        =>    $request->end_time,
                     'description' => is_null($request->description) ? "" : $request->description,
                     'place'     => $place
                 ]);
@@ -209,7 +183,7 @@ class EventController extends Controller
                 $mails = explode(", ", $request->invites);
                 $users = User::whereIn("email", $mails)->get('id');
                 foreach ($users as $user) {
-                    if ($user->id == Auth::id()) continue; 
+                    if ($user->id == Auth::id()) continue;
                     Attendance::create([
                         'is_admin'    => false,
                         'event'    => $id,
@@ -237,7 +211,7 @@ class EventController extends Controller
         Attendance::where('user', '=', Auth::id())
             ->where('event', '=', $id)
             ->delete();
-            
+
         // Usuwanie wydarzenia, jeśli nie posiada ono administratora 
         if (
             Attendance::where('event', '=', $id)

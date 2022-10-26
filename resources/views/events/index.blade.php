@@ -21,9 +21,9 @@
                             <div class="flex flex-row flex-wrap">
                                 <div class="border-8 border-sky-100 bg-sky-100 rounded-full m-1">
                                     <span
-                                        class="px-2 border-white border-4 bg-white rounded-full">{{ $item->start }}</span>
+                                        class="px-2 border-white border-4 bg-white rounded-full">{{ $item->start }} {{ $item->start_time }}</span>
                                     <span
-                                        class="px-2 border-white border-4 bg-white rounded-full">{{ $item->end }}</span>
+                                        class="px-2 border-white border-4 bg-white rounded-full">{{ $item->end }} {{ $item->end_time }}</span>
                                 </div>
                                 <div class="border-8 border-green-100 bg-green-100 rounded-full m-1">
                                     <span
