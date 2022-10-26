@@ -97,7 +97,7 @@ class EventController extends Controller
         $event->start = $request->start;
         $event->start_time = $request->start_time;
         $event->end = $request->end;
-        $event->end_time = $request->end_end_time;
+        $event->end_time = $request->end_time;
         $event->description = is_null($request->description) ? "" : $request->description;
         $event->place = $request->place;
         $event->save();
