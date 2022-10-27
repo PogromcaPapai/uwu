@@ -28,10 +28,8 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            data.forEach(d => {
-                var node = $("template#forecast").content.cloneNode(true);
-                $(`#infos-${attend_id}`).append(format_by_id(node, d));
-            });
+            var node = $("template#forecast").content.cloneNode(true);
+            $(`#infos-${attend_id}`).append(format_by_id(node, data['forecast']));
         }
     );
 
@@ -41,10 +39,8 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            data.forEach(d => {
-                var node = $("template#current").content.cloneNode(true);
-                $(`#infos-${attend_id}`).append(format_by_id(node, d));
-            });
+            var node = $("template#current").content.cloneNode(true);
+            $(`#infos-${attend_id}`).append(format_by_id(node, data));
         }
     );
 }
