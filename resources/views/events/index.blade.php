@@ -76,7 +76,7 @@
                                     </div>
                                 </template>
                             </div>
-                            <script>weather_getter({{$item->id}})</script>
+                            <script>window.weather_getter({{$item->id}})</script>
                             
                             {{-- Przycisk --}}
                             <div class="mt-6 "><a
