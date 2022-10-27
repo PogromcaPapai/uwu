@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\FullCalenderController;
 use App\Http\Controllers\PlaceController;
 
@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('/api/{subpath}', function ($subpath) {
-    return Redirect::to('http://217.168.143.76:9000/'.$subpath);
+    return Http::get('127.0.0.1:9000/'.$subpath)->body();
 })->where('subpath', '.*');
 
 Route::get('/calendar', function () {
