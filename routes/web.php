@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('/api/{subpath?}', function ($subpath) {
-    $url = 'http://217.168.143.76:9000/' . $subpath;
+    $url = 'http://172.24.206.101:9000/' . $subpath;
     $client = new Client();
     $response = $client->request('GET', $url);
     return response($response->getBody())
