@@ -16,7 +16,7 @@ window.weather_getter = (attend_id) => {
             if (status != "success")
                 return;
             data.forEach(d => {
-                var node = $("template#warn").content.cloneNode(true);
+                var node = $("template#warn > div").cloneNode(true);
                 $(`#infos-${attend_id}`).append(format_by_id(node, d));
             });
         }
@@ -28,7 +28,7 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            var node = $("template#forecast").content.cloneNode(true);
+            var node = $("template#forecast > div").cloneNode(true);
             $(`#infos-${attend_id}`).append(format_by_id(node, data['forecast']));
         }
     );
@@ -39,7 +39,7 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            var node = $("template#current").content.cloneNode(true);
+            var node = $("template#current > div").cloneNode(true);
             $(`#infos-${attend_id}`).append(format_by_id(node, data));
         }
     );
