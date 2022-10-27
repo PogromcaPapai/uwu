@@ -61,7 +61,7 @@
     </div>
 
     {{-- Informacje o aktualnej pogodzie --}}
-    <template id="current">
+    <div id="current" hidden>
         <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
             <h3 class="font-bold">{{ __('app.current') }}
             </h3>
@@ -70,10 +70,10 @@
                 prędkością <span id="wind"></span> km/h.
             </p>
         </div>
-    </template>
+    </div>
 
     {{-- Informacje o prognozie --}}
-    <template id="forecast">
+    <div id="forecast" hidden>
         <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
             <h3 class="font-bold">{{ __('app.forecast') }}
             </h3>
@@ -83,13 +83,13 @@
                 prędkością <span id="wind_speed"></span> km/h (w porywach do <span id="wind_gust"></span>).
             </p>
         </div>
-    </template>
+    </div>
 
     {{-- Ostrzeżenia pogodowe --}}
-    <template id="warn">
+    <div id="warn" hidden>
         <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4" role="alert">
             <h3 class="font-bold" id="title"></h3>
             <p id="short"></p>
         </div>
-    </template>
+    </div>
 </x-app-layout>
