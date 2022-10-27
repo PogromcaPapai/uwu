@@ -44,7 +44,7 @@ def _download(lat:float, lon:float, mode:str):
         raise NotImplementedError()
     
     contents = json_load(urlopen(url))
-    return contents['list']
+    return contents['list'] if mode == "forecast" else contents
 
 def forecast(lat: float, lon: float, moment: date|datetime):
     if isinstance(moment, date):
