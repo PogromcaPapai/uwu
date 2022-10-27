@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Http\Client;
 use App\Http\Controllers\FullCalenderController;
 use App\Http\Controllers\PlaceController;
 
@@ -24,8 +24,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/api/{subpath}', function ($subpath) {
-    return Http::get('127.0.0.1:9000/'.$subpath)->body();
+Route::get('/api/{subpath?}', function ($subpath) {
+    $url = 'http://217.168.143.76:9000/' . $subpath;
+    $client = new Client();
+    $response = $client->request('GET', $url);
+    return response($response->getBody())
+            ->withHeaders($response->getHeaders());
 })->where('subpath', '.*');
 
 Route::get('/calendar', function () {
