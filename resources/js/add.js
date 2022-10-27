@@ -25,7 +25,7 @@ window.weather_getter = (attend_id) => {
 
     // Get forecast
     $.get(
-        `${API_URL}/forecast/attend/${attend_id}`,
+        `/api/forecast/attend/${attend_id}`,
         function (data, status) {
             if (status != 200)
                 return;
@@ -39,7 +39,7 @@ window.weather_getter = (attend_id) => {
 
     // Get current
     $.get(
-        `${API_URL}/current/attend/${attend_id}`,
+        `/api/current/attend/${attend_id}`,
         function (data, status) {
             if (status != 200)
                 return;
