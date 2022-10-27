@@ -13,7 +13,7 @@ window.weather_getter = (attend_id) => {
             if (status != "success")
                 return;
             data.forEach(d => {
-                $(`#infos-${attend_id}`).append($("div#forecast > div").clone());
+                $(`#infos-${attend_id}`).append($("div#warn > div").clone());
                 format_by_id(attend_id, d);
             });
         }
@@ -36,7 +36,7 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            $(`#infos-${attend_id}`).append($("div#forecast > div").clone());
+            $(`#infos-${attend_id}`).append($("div#current > div").clone());
             format_by_id(attend_id, data);
         }
     );
