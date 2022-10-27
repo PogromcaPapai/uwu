@@ -23,6 +23,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/api/{subpath}', function ($subpath) {
+    return redirect()->to('http://217.168.143.76:9000/'.$subpath);
+});
+
 Route::get('/calendar', function () {
     return view('calendar');
 })->middleware(['auth'])->name('calendar');
