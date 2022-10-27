@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 use App\Http\Controllers\FullCalenderController;
 use App\Http\Controllers\PlaceController;
 
