@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from database import engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from libs.weather import get_alerts, forecast
+from libs.weather import get_alerts, forecast, current
 from libs.commons import CONFIG
 from models import Preference, Place, Attendence, full_date
 from uvicorn import run
@@ -24,6 +24,20 @@ async def _alerts_place(place_id: int, type_: str = "meteo"):
     with Session(engine) as db:
         place = db.scalar(query)
     return get_alerts(unidecode(place.wojew), type_)
+
+@app.get("/alerts/attend/{attend_id}")
+async def _alerts_attend(attend_id: int, type_: str = "meteo"):
+    query = select(Attendence).where(Attendence.id==attend_id)
+    with Session(engine) as db:
+        place = db.scalar(query).place_
+    return get_alerts(unidecode(place.wojew), type_)
+
+@app.get("/current/attend/{attend_id}")
+async def _current_attend(attend_id: int, type_: str = "meteo"):
+    query = select(Attendence).where(Attendence.id==attend_id)
+    with Session(engine) as db:
+        place = db.scalar(query).place_
+    return current(place.lat, place.lon)
 
 @app.get("/forecast/geo/{lat}-{lon}")
 async def _forecast_geo(lat: float, lon: float, moment: datetime | None = None):
