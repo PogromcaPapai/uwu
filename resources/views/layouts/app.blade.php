@@ -37,7 +37,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/getter.js') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased">
