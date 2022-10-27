@@ -13,7 +13,7 @@ const API_URL = '217.168.143.76:9000'
 window.weather_getter = (attend_id) => {
     // Get alerts
     $.get(
-        `${API_URL}/alerts/attend/${attend_id}`,
+        `https://${API_URL}/alerts/attend/${attend_id}`,
         function (data, status) {
             if (status != 200)
                 return;
