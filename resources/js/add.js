@@ -8,6 +8,8 @@ function format_by_id(node, info) {
     return node
 }
 
+const API_URL = '217.168.143.76:9000'
+
 window.weather_getter = (attend_id) => {
     // Get alerts
     $.get(
