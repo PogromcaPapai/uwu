@@ -1,9 +1,7 @@
 
-function format_by_id(node, info) {
+function format_by_id(attend_id, info) {
     for (let key in info) {
-        node.querySelectorAll(`#${key}`).forEach(element => {
-            element.innerText = info[key];
-        })
+        $(`#infos-${attend_id} #${key}`).text(info[key]);
     }
     return node
 }
@@ -17,7 +15,7 @@ window.weather_getter = (attend_id) => {
                 return;
             data.forEach(d => {
                 var node = $("div#warn > div").clone();
-                $(`#infos-${attend_id}`).append(format_by_id(node, d));
+                $(`#infos-${attend_id}`).append(format_by_id(attend_id, d));
             });
         }
     );
