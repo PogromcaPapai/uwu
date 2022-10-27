@@ -29,14 +29,14 @@ async def _alerts_place(place_id: int, type_: str = "meteo"):
 async def _alerts_attend(attend_id: int, type_: str = "meteo"):
     query = select(Attendence).where(Attendence.id==attend_id)
     with Session(engine) as db:
-        place = db.scalar(query).place_
+        place = db.scalar(query).event_.place_
     return get_alerts(unidecode(place.wojew), type_)
 
 @app.get("/current/attend/{attend_id}")
 async def _current_attend(attend_id: int, type_: str = "meteo"):
     query = select(Attendence).where(Attendence.id==attend_id)
     with Session(engine) as db:
-        place = db.scalar(query).place_
+        place = db.scalar(query).event_.place_
     return current(place.lat, place.lon)
 
 @app.get("/forecast/geo/{lat}-{lon}")
