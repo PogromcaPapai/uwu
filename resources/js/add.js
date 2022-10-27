@@ -11,7 +11,7 @@ function format_by_id(node, info) {
 window.weather_getter = (attend_id) => {
     // Get alerts
     $.get(
-        `/api/${API_URL}/alerts/attend/${attend_id}`,
+        `/api/alerts/attend/${attend_id}`,
         function (data, status) {
             if (status != 200)
                 return;
