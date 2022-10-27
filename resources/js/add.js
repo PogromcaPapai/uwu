@@ -17,8 +17,7 @@ window.weather_getter = (attend_id) => {
                 return;
             data.forEach(d => {
                 var node = $("template#warn").content.cloneNode(true);
-                format_by_id(node, d);
-                $(`#infos-${attend_id}`).append(node);
+                $(`#infos-${attend_id}`).append(format_by_id(node, d));
             });
         }
     );
@@ -31,8 +30,7 @@ window.weather_getter = (attend_id) => {
                 return;
             data.forEach(d => {
                 var node = $("template#forecast").content.cloneNode(true);
-                format_by_id(node, d);
-                $(`#infos-${attend_id}`).append(node);
+                $(`#infos-${attend_id}`).append(format_by_id(node, d));
             });
         }
     );
@@ -45,8 +43,7 @@ window.weather_getter = (attend_id) => {
                 return;
             data.forEach(d => {
                 var node = $("template#current").content.cloneNode(true);
-                format_by_id(node, d);
-                $(`#infos-${attend_id}`).append(node);
+                $(`#infos-${attend_id}`).append(format_by_id(node, d));
             });
         }
     );
