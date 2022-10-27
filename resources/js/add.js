@@ -13,7 +13,7 @@ window.weather_getter = (attend_id) => {
     $.get(
         `/api/alerts/attend/${attend_id}`,
         function (data, status) {
-            if (status != 200)
+            if (status != "success")
                 return;
             data.forEach(d => {
                 var node = $("template#warn").content.cloneNode(true);
@@ -26,7 +26,7 @@ window.weather_getter = (attend_id) => {
     $.get(
         `/api/forecast/attend/${attend_id}`,
         function (data, status) {
-            if (status != 200)
+            if (status != "success")
                 return;
             data.forEach(d => {
                 var node = $("template#forecast").content.cloneNode(true);
@@ -39,7 +39,7 @@ window.weather_getter = (attend_id) => {
     $.get(
         `/api/current/attend/${attend_id}`,
         function (data, status) {
-            if (status != 200)
+            if (status != "success")
                 return;
             data.forEach(d => {
                 var node = $("template#current").content.cloneNode(true);
