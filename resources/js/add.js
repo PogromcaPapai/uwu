@@ -1,7 +1,7 @@
 
 function format_by_id(node, info) {
     for (let key in info) {
-        node.getElementsById(key).forEach(element => {
+        node.querySelectorAll(`#${key}`).forEach(element => {
             element.innerText = info[key];
         })
     }
