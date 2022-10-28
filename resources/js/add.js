@@ -15,7 +15,7 @@ window.weather_getter = (attend_id) => {
             data.forEach((d, i) => {
                 var element = $("div#warn > div").clone();
                 element[0].id = `info-warn-${attend_id}-${i}`
-                $(`#infos-${attend_id}`).append();
+                $(`#infos-${attend_id}`).append(element);
                 format_by_id(element[0].id, d);
             });
         }
@@ -29,7 +29,7 @@ window.weather_getter = (attend_id) => {
                 return;
             var element = $("div#forecast > div").clone();
             element[0].id = `info-forecast-${attend_id}`
-            $(`#infos-${attend_id}`).append();
+            $(`#infos-${attend_id}`).append(element);
             format_by_id(element[0].id, data['forecast']);
         }
     );
@@ -42,7 +42,7 @@ window.weather_getter = (attend_id) => {
                 return;
             var element = $("div#current > div").clone();
             element[0].id = `info-current-${attend_id}`
-            $(`#infos-${attend_id}`).append();
+            $(`#infos-${attend_id}`).append(element);
             format_by_id(element[0].id, data);
         }
     );
