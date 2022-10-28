@@ -65,9 +65,9 @@
         <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
             <h3 class="font-bold">{{ __('app.current') }}
             </h3>
-            <p>Panuje <span id="description"></span>. Temperatura wynosi
-                <span id="temp"></span> stopni, ciśnienie <span id="pressure"></span> hPA, a wiatr wieje z
-                prędkością <span id="wind_speed"></span> km/h.
+            <p>Panuje <span class="description"></span>. Temperatura wynosi
+                <span class="temp"></span> stopni, ciśnienie <span class="pressure"></span> hPA, a wiatr wieje z
+                prędkością <span class="wind_speed"></span> km/h.
             </p>
         </div>
     </div>
@@ -75,12 +75,12 @@
     {{-- Informacje o prognozie --}}
     <div id="forecast" hidden>
         <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
-            <h3 class="font-bold">{{ __('app.forecast') }}
+            <h3 class="font-bold">Prognoza pogody
             </h3>
             <p>
-                Prognozujemy <span id="description"></span>. Temperatura będzie wynosić
-                <span id="temp"></span> stopni, ciśnienie <span id="pressure"></span> hPA, a wiatr będzie wiał z
-                prędkością <span id="wind_speed"></span> km/h (w porywach do <span id="wind_gust"></span>).
+                Prognozujemy <span class="description"></span>. Temperatura będzie wynosić
+                <span class="temp"></span> stopni, ciśnienie <span class="pressure"></span> hPA, a wiatr będzie wiał z
+                prędkością <span class="wind_speed"></span> km/h (w porywach do <span class="wind_gust"></span>).
             </p>
         </div>
     </div>
@@ -88,8 +88,8 @@
     {{-- Ostrzeżenia pogodowe --}}
     <div id="warn" hidden>
         <div class="bg-orange-100 border-l-4 border-orange-300 text-orange-600 p-4" role="alert">
-            <h3 class="font-bold" id="title"></h3>
-            <p id="short"></p>
+            <h3 class="font-bold title"></h3>
+            <p class="short"></p>
         </div>
     </div>
 </x-app-layout>
