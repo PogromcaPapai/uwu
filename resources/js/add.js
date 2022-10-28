@@ -1,7 +1,7 @@
 
 function format_by_id(id, info) {
     for (let key in info) {
-        $(id).text(info[key]);
+        $("#".concat(id)).text(info[key]);
     }
 }
 
