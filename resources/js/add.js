@@ -1,3 +1,4 @@
+const { isNull } = require("lodash");
 
 function format_by_id(id, info) {
     for (let key in info) {
@@ -25,7 +26,7 @@ window.weather_getter = (attend_id) => {
     $.get(
         `/api/forecast/attend/${attend_id}`,
         function (data, status) {
-            if (status != "success")
+            if (status != "success" || $.isEmptyObject(data))
                 return;
             var element = $("div#forecast > div").clone();
             element[0].id = `info-forecast-${attend_id}`
@@ -38,7 +39,7 @@ window.weather_getter = (attend_id) => {
     $.get(
         `/api/current/attend/${attend_id}`,
         function (data, status) {
-            if (status != "success")
+            if (status != "success" || $.isEmptyObject(data))
                 return;
             var element = $("div#current > div").clone();
             element[0].id = `info-current-${attend_id}`
