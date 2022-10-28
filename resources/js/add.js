@@ -1,7 +1,7 @@
 
-function format_by_id(attend_id, info) {
+function format_by_id(id, info) {
     for (let key in info) {
-        $(`#infos-${attend_id} #${key}`).text(info[key]);
+        $(id).text(info[key]);
     }
 }
 
@@ -12,9 +12,11 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            data.forEach(d => {
-                $(`#infos-${attend_id}`).append($("div#warn > div").clone());
-                format_by_id(attend_id, d);
+            data.forEach((d, i) => {
+                var element = $("div#warn > div").clone();
+                element[0].id = `info-warn-${attend_id}-${i}`
+                $(`#infos-${attend_id}`).append();
+                format_by_id(element[0].id, d);
             });
         }
     );
@@ -25,8 +27,10 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            $(`#infos-${attend_id}`).append($("div#forecast > div").clone());
-            format_by_id(attend_id, data['forecast']);
+            var element = $("div#forecast > div").clone();
+            element[0].id = `info-forecast-${attend_id}`
+            $(`#infos-${attend_id}`).append();
+            format_by_id(element[0].id, data['forecast']);
         }
     );
 
@@ -36,8 +40,10 @@ window.weather_getter = (attend_id) => {
         function (data, status) {
             if (status != "success")
                 return;
-            $(`#infos-${attend_id}`).append($("div#current > div").clone());
-            format_by_id(attend_id, data);
+            var element = $("div#current > div").clone();
+            element[0].id = `info-current-${attend_id}`
+            $(`#infos-${attend_id}`).append();
+            format_by_id(element[0].id, data);
         }
     );
 }
