@@ -57,9 +57,7 @@
         </main>
 
         <footer class="flex flex-col items-center text-gray-600 text-xs">
-            <p><b>Autorzy: </b> Jakub Dakowski, Przemysław Cydejko, Jakub Czernek</p>
-            <p>Dane o ostrzeżeniach pogodowych pochodzą ze strony <a href="https://danepubliczne.imgw.pl/">IMGW</a></p>
-            <p><a href="https://icons8.com/icon/NRSk3o774DQK/calendar">Calendar icon by Icons8</a></p>
+            <p><b>Autorzy: </b> Jakub Dakowski, Patrycja Bałdyga, Przemysław Cydejko, Jakub Czernek</p>
         </footer>
     </div>
 </body>
