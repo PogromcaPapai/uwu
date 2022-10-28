@@ -67,7 +67,7 @@
             </h3>
             <p>Panuje <span id="description"></span>. Temperatura wynosi
                 <span id="temp"></span> stopni, ciśnienie <span id="pressure"></span> hPA, a wiatr wieje z
-                prędkością <span id="wind"></span> km/h.
+                prędkością <span id="wind_speed"></span> km/h.
             </p>
         </div>
     </div>
