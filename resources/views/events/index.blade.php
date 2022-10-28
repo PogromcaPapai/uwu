@@ -65,7 +65,7 @@
         <div class="bg-blue-100 border-l-4 border-blue-300 text-blue-600 p-4" role="alert">
             <h3 class="font-bold">{{ __('app.current') }}
             </h3>
-            <p>Panuje <span id="desc"></span>. Temperatura wynosi
+            <p>Panuje <span id="description"></span>. Temperatura wynosi
                 <span id="temp"></span> stopni, ciśnienie <span id="pressure"></span> hPA, a wiatr wieje z
                 prędkością <span id="wind"></span> km/h.
             </p>
