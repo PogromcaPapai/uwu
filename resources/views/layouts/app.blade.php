@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'uwu') }}</title>
 
     <link rel="icon"
-        href="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-calendar-calendar-kmg-design-flat-kmg-design-35.png"
+        href="https://i.imgur.com/naI22Yw.png"
         type="image/icon">
 
     <!-- Fonts -->

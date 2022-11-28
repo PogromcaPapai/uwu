@@ -1,0 +1,10 @@
+﻿
+{% extends "base.jinja" %}
+{% block header %}Nadchodzi wydarzenie "{{event_name}}"{% endblock %}
+{% block content %}
+{% for item in info %}
+<p style="margin-top:0;margin-bottom:12px;font-family:Arial,sans-serif;font-weight:bold;">{{item.title}}</p>
+<p style="margin-top:0;margin-bottom:14px;font-family:Arial,sans-serif;">{{item.description}}</p>
+{% endfor %}
+{% endblock %}
+{% block url %}http://uwu.jakdak.online:5432/events/edit/{{event_id}}{% endblock %}

@@ -1,21 +1,40 @@
-from envelopes import GMailSMTP, Envelope
-from libs.commons import CONFIG
-    
-client = GMailSMTP(CONFIG['gmail_address'], CONFIG['gmail_password'])
+from simplegmail import Gmail
+from commons import CONFIG, MAIL_DIR, GOOGLE_SECRET_PATH
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+from html.parser import HTMLParser
 
-HTML_TEMPLATE = """
+engine = Environment(
+    loader=FileSystemLoader(MAIL_DIR),
+    autoescape=select_autoescape(),
+)
 
-"""
-TEXT_TEMPLATE = """
+client = Gmail(client_secret_file=str(GOOGLE_SECRET_PATH))
 
-"""
+class HTMLFilter(HTMLParser):
+    text = ""
+    def handle_data(self, data):
+        self.text += data
 
-def send_mail(to: list[str], subject: str, **kwargs):
-    env = Envelope(
-        bcc_addr=to,
-        from_addr=CONFIG['gmail_address'],
+def send_mail(to: list[str], template: str, subject: str, **kwargs):
+    rtemplate = engine.get_template(f'{template}.jinja')
+    html = rtemplate.render(**kwargs)
+
+    reader = HTMLFilter()
+    reader.feed(html)
+
+    env = dict(
+        sender='uwu.notification@gmail.com',
+        to='',
+        bcc=to,
         subject=subject,
-        html_body=HTML_TEMPLATE.format(**kwargs),
-        text_body=TEXT_TEMPLATE.format(**kwargs)
+        msg_html=html,
+        msg_plain=reader.text
     )
-    client.send(env)
+    client.send_message(**env)
+    
+if __name__=='__main__':
+    send_mail(
+        ['jakubdakowski@gmail.com'],
+        'test',
+        'test'
+    )
