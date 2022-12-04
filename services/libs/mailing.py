@@ -24,13 +24,13 @@ def send_mail(to: list[str], template: str, subject: str, **kwargs):
 
     env = dict(
         sender='uwu.notification@gmail.com',
-        to='',
-        bcc=to,
+        to=to,
+        # bcc=to,
         subject=subject,
         msg_html=html,
         msg_plain=reader.text
     )
-    client.send_message(**env)
+    client.send_message(**env)  # type: ignore
     
 if __name__=='__main__':
     send_mail(

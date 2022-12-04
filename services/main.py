@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from fastapi import FastAPI
 
-from database import engine
+from database import engine  # type: ignore
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast, current
