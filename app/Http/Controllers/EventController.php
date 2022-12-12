@@ -190,6 +190,7 @@ class EventController extends Controller
                         'user'    => $user->id,
                     ]);
                 }
+                
                 return redirect('/events/index');
             } else {
                 return abort(405, "You're not the administrator of this event");  // Brak uprawnień

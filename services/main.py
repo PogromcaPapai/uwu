@@ -1,14 +1,15 @@
 from datetime import datetime, timedelta
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 
 from database import engine  # type: ignore
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from libs.weather import get_alerts, forecast, current
 from libs.commons import CONFIG
-from models import Preference, Place, Attendence, full_date
+from models import Place, Attendence, Event, full_date
 from uvicorn import run
 from unidecode import unidecode
+from triggers import run_trrigers, send_mail
 
 from libs.commons import middle
 
@@ -98,3 +99,37 @@ def forecast_attendence(attend_id:int):
         "warns": list(check(weather, preference)),
         "meta":meta
     }
+    
+@app.get("/send/event/{event_Id}")
+def _send_change(event_Id, authorization: str | None = Header(default=None)):
+    if authorization != "Basic "+CONFIG["private"]:
+        return
+    query = select(Event).where(Event.id==event_Id)
+    with Session(engine) as db:
+        event = db.scalar(query)
+        guests = [
+            i.user_.email for i in db.scalar(
+                select(Attendence).where(
+                    Attendence.event==event.id)
+                )
+        ]
+    send_mail(
+        guests, 
+        'modify.jinja',
+        "Wydarzenie zostało zmodyfikowane",
+        info=tuple({
+            "Tytuł":event.title,
+            "Opis":event.description,
+            "Data rozpoczęcia":event.start.strftime("%d.%m.%Y"),
+            "Godzina rozpoczęcia":event.start_time.strftime("%H:%M"),
+            "Data zakończenia":event.end.strftime("%d.%m.%Y"),
+            "Godzina zakończenia":event.end_time.strftime("%H:%M"),
+            "Miejsce wydarzenia":f'{event.name} ({event.desc}, {event.powiat})',
+            "Uczestnicy":', '.join(guests)
+        }.items())
+    )
+    return
+    
+if __name__=="__main__":
+    run_trrigers(forecast_attendence)
+    run(app)

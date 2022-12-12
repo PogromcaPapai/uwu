@@ -1,17 +1,12 @@
-from asyncio import events
 from datetime import datetime, timedelta
 
 from database import engine  # type: ignore
-from sqlalchemy import DDL, select, event
+from sqlalchemy import select, DDL, event
 from sqlalchemy.orm import Session
 from libs.mailing import send_mail
-from libs.commons import CONFIG
-from models import Preference, Place, Attendence, full_date, Event
-from uvicorn import run
-from unidecode import unidecode
+from models import Attendence, Event
 from apscheduler.schedulers.background import BackgroundScheduler
-
-from libs.commons import middle
+from sys import argv as arguments
 
 scheduler = BackgroundScheduler()
 
@@ -71,7 +66,6 @@ def send_weather(attendance_forecast_get):
             for j in attendences:
                 infos = attendance_forecast_get(j.id)
                 forecast = infos['forecast']
-                warns = infos['warns']
                 send_mail(
                     [j.user_.email], 
                     'weather.jinja', 
@@ -85,22 +79,11 @@ def send_weather(attendance_forecast_get):
                         }
                     ] + [{'name':'Ostrzeżenie', 'description':i} for i in gen_comments(infos)]
                 )
-            
 
-scheduler.start()
-
-# update_task_state = DDL('''\
-# CREATE TRIGGER event_change_trigger      
-# AFTER UPDATE
-# ON events
-# FOR EACH ROW
-# AS
-# BEGIN
-#   DECLARE updated_row CHAR(255);
-#   DECLARE cmd CHAR(255);
-#   DECLARE result CHAR(255);
-#   SET updated_row = NEW.id;
-#   SET cmd = CONCAT('python /sciezka/do/skryptu.py', updated_row);
-#   SET result = sys_eval(cmd);
-# END;''')
-# event.listen(Event.__table__, 'on_update', update_task_state)
+def run_trrigers(attendance_forecast_get):
+    scheduler.add_job(
+        lambda: send_weather(attendance_forecast_get),
+        "interval", hours=1
+    )
+    scheduler.start()
+    return scheduler
