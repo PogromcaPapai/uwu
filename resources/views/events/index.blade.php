@@ -29,7 +29,7 @@
                                     <span
                                         class="px-2 border-white border-4 bg-white rounded-full">{{ $item->name }}</span>
                                 </div>
-                                @if ($item->is_admin == 1)
+                                @if ($is_mod == 0 && $item->is_admin == 1)
                                     <div class="border-8 border-red-100 bg-red-100 rounded-full m-1">
                                         <span
                                             class="px-2 border-white border-4 bg-white rounded-full">{{ __('app.admin') }}</span>
@@ -50,7 +50,7 @@
                             {{-- Przycisk --}}
                             <div class="mt-6 "><a
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                                    href="/events/edit/{{ $item->event }}">
+                                    href="{{$prefix}}/events/edit/{{ $item->event }}">
                                     {{ __('app.view') }}
                                 </a></div>
                         </div>

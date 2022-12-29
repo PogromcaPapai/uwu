@@ -18,6 +18,16 @@
                     <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                         {{ __('app.calendar') }}
                     </x-nav-link>
+                    @auth
+                        @if (Auth::user()->is_mod == 1)
+                            <x-nav-link :href="route('admin_events')" :active="request()->routeIs('admin_events')">
+                                Wydarzenia (admin)
+                            </x-nav-link>
+                            <x-nav-link :href="route('admin_users')" :active="request()->routeIs('admin_users')">
+                                Uytkownicy (admin)
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 

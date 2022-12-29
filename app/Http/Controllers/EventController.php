@@ -56,7 +56,7 @@ class EventController extends Controller
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
         $prognosis = [];
         $weather = [];
-        return view('events/index', ['events' => $data]);
+        return view('events/index', ['events' => $data, 'is_mod' => 0, 'prefix' => '']);
     }
 
     /**
@@ -70,7 +70,7 @@ class EventController extends Controller
     {
         $start = new DateTime($request->start);
         $end = new DateTime($request->end);
-        return view('events/edit', ["edit" => false, 'start' => $start->format('Y-m-d'), 'end' => $end->format('Y-m-d')]);
+        return view('events/edit', ["edit" => false, 'start' => $start->format('Y-m-d'), 'end' => $end->format('Y-m-d'), 'prefix' => '']);
     }
 
     /**
@@ -80,7 +80,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events/edit', ["edit" => false, 'start' => null, 'end' => null]);
+        return view('events/edit', ["edit" => false, 'start' => null, 'end' => null, 'prefix' => '']);
     }
 
     /**
@@ -145,7 +145,7 @@ class EventController extends Controller
             $invites_arr = Attendance::where('event', '=', $id)->where('user', '!=', Auth::id())->join('users', 'user', '=', 'users.id')->pluck('email')->toArray();
             $invites = join(", ", $invites_arr);
 
-            return view('events/edit', ['event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true]);
+            return view('events/edit', ['event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true, 'prefix' => '']);
         } else {
             return abort(401, "You don't have access to any such event"); // Nie znaleziono wydarzenia
         }

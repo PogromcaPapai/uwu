@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ModEventController;
+use App\Http\Controllers\ModUserController;
 use Illuminate\Support\Facades\Route;
 use GuzzleHttp\Client;
 use App\Http\Controllers\FullCalenderController;
@@ -52,5 +54,25 @@ Route::prefix('events')->group(function () {
     Route::post('edit/{id}', [EventController::class, 'update'])->middleware(['auth']);
 
     Route::get('edit/{id}/delete', [EventController::class, 'destroy'])->middleware(['auth']);
+    
 });
+
+Route::prefix('admin')->group(function () {
+    Route::prefix('events')->group(function () {
+        Route::get('index', [ModEventController::class, 'index'])->middleware(['auth'])->name('admin_events');
+        
+        Route::get('edit/{id}', [ModEventController::class, 'edit'])->middleware(['auth']);
+        Route::post('edit/{id}', [ModEventController::class, 'update'])->middleware(['auth']);
+    
+        Route::get('edit/{id}/delete', [ModEventController::class, 'destroy'])->middleware(['auth']);
+        
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('index', [ModUserController::class, 'index'])->middleware(['auth'])->name('admin_users');
+        Route::post('edit', [ModUserController::class, 'post'])->middleware(['auth']);
+        Route::get('edit/{id}/delete', [ModUserController::class, 'delete'])->middleware(['auth']);
+    });
+});
+
 require __DIR__.'/auth.php';

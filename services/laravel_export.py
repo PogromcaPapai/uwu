@@ -83,6 +83,7 @@ class User(Base):
     remember_token = Column(String(100, 'utf8mb4_unicode_ci'))
     created_at = Column(TIMESTAMP, server_default=text("current_timestamp()"))
     updated_at = Column(TIMESTAMP)
+    is_mod = Column(TINYINT(1), default=0)
 
 
 class Event(Base):
