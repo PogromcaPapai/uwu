@@ -70,7 +70,7 @@ class EventController extends Controller
     {
         $start = new DateTime($request->start);
         $end = new DateTime($request->end);
-        return view('events/edit', ["edit" => false, 'start' => $start->format('Y-m-d'), 'end' => $end->format('Y-m-d'), 'prefix' => '']);
+        return view('events/edit', ["edit" => false, 'start' => $start->format('Y-m-d'), 'end' => $end->format('Y-m-d')]);
     }
 
     /**
@@ -80,7 +80,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events/edit', ["edit" => false, 'start' => null, 'end' => null, 'prefix' => '']);
+        return view('events/edit', ["edit" => false, 'start' => null, 'end' => null]);
     }
 
     /**

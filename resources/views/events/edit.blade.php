@@ -173,6 +173,18 @@
                             </div>
                         @endif
                         <div class="flex justify-center gap-1.5">
+                            @if (isset($is_mod) && $is_mod == 1)
+                                @php
+                                    $prefix = '/admin';
+                                @endphp
+                            @else
+                                @php 
+                                    $prefix = '';
+                                    if ($edit) {
+                                        $eid = $event->event;
+                                    }
+                                @endphp
+                            @endif
                             <a
                                 class="inline-block px-6 py-2 border-2 border-blue-600 text-blue-600 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
                                 href="{{$prefix}}/events/index">{{ __('app.goback') }}</a>
@@ -183,7 +195,7 @@
                             @if ($edit)
                                 <a
                                     class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
-                                    href="{{$prefix}}/events/edit/{{ $event->event }}/delete">{{ __('app.delete') }}</a>
+                                    href="{{$prefix}}/events/edit/{{ $eid }}/delete">{{ __('app.delete') }}</a>
                             @endif
                         </div>
                     </form>

@@ -1,5 +1,5 @@
 from simplegmail import Gmail
-from commons import CONFIG, MAIL_DIR, GOOGLE_SECRET_PATH
+from libs.commons import CONFIG, MAIL_DIR, GOOGLE_SECRET_PATH
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from html.parser import HTMLParser
 

@@ -9,11 +9,12 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
+function authAdmin() {
+    return User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() > 0;
+}
+
 class ModEventController extends Controller
 {
-    public function authAdmin() {
-        return User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() > 0;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -26,13 +27,13 @@ class ModEventController extends Controller
         }
         // Zbieranie danych o wydarzeniach w których uczestniczy użytkownik
         $data = Event::join('places', 'places.id', '=', 'events.place')
-            ->get(['id', 'title', 'start', 'end', 'start_time', 'end_time', 'name', 'powiat', 'event', 'description', 'wojew'])
+            ->get(['events.id', 'title', 'start', 'end', 'start_time', 'end_time', 'name', 'powiat', 'description', 'wojew'])
             ->sortBy(['start', 'start_time']);
 
         // Zbieranie danych o ostrzeżeniach i danych pogodowych
         $prognosis = [];
         $weather = [];
-        return view('events/index', ['events' => $data, 'is_mod'=>1, 'prefix' => '/admin']);
+        return view('events/index', ['events' => $data, 'is_mod'=>1]);
     }
 
     /**
@@ -59,7 +60,7 @@ class ModEventController extends Controller
             $invites_arr = Attendance::where('event', '=', $id)->join('users', 'user', '=', 'users.id')->pluck('email')->toArray();
             $invites = join(", ", $invites_arr);
 
-            return view('events/edit', ['event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true, 'prefix' => '/admin']);
+            return view('events/edit', ['eid' => $id, 'event' => $event, 'invites' => $invites, "editable" => $editable, 'edit' => true, 'is_mod' => 1]);
         } else {
             return abort(401, "No such event"); // Nie znaleziono wydarzenia
         }

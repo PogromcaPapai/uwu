@@ -5,10 +5,12 @@
         </h2>
     </x-slot>
 
+    @if ($is_mod == 0)
     <a class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-md leading-tight uppercase rounded-full hover:bg-blue-700 focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
         style="position:fixed; bottom:30px; right:40px;" href="{{ route('add_event') }}">
         <span>{{ __('app.add_event') }}</span>
     </a>
+    @endif
 
     <div class="py-12">
         <div class="mx-auto sm:px-6 lg:px-8">
@@ -40,19 +42,27 @@
                                 {{ $item->description }}
                             </p>
 
-                            <div class="space-y-2" id="infos-{{ $item->id }}">
-
-                            </div>
-                            <script>
-                                window.weather_getter({{ $item->id }})
-                            </script>
-
-                            {{-- Przycisk --}}
-                            <div class="mt-6 "><a
+                            @if ($is_mod == 1)
+                                {{-- Przycisk --}}
+                                <div class="mt-6 "><a
                                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                                    href="{{$prefix}}/events/edit/{{ $item->event }}">
+                                    href="/admin/events/edit/{{ $item->id }}">
                                     {{ __('app.view') }}
                                 </a></div>
+                            @else
+                                <div class="space-y-2" id="infos-{{ $item->id }}">
+                                        
+                                </div>
+                                <script>
+                                    window.weather_getter({{ $item->id }})
+                                </script>
+                                <div class="mt-6 "><a
+                                    class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                                    href="/events/edit/{{ $item->event }}">
+                                    {{ __('app.view') }}
+                                </a></div>
+                            @endif
+                            
                         </div>
                     </div>
                 @endforeach

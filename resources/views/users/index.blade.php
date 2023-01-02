@@ -25,18 +25,18 @@
                                 @foreach ($users as $user)    
                                 <tr>
                                   <form action="admin/users" method="post">
-                                      <td><input type="number" name="id" id="id-field" readonly value="{{user.id}}"></td>
-                                      <td><input type="text" name="name" id="name-field" required value="{{user.email}}"></td>
-                                      <td><input type="email" name="email" id="email-field" required value="{{user.email}}"></td>
+                                      <td><input type="number" name="id" id="id-field" readonly value="{{$user->id}}"></td>
+                                      <td><input type="text" name="name" id="name-field" required value="{{$user->email}}"></td>
+                                      <td><input type="email" name="email" id="email-field" required value="{{$user->email}}"></td>
                                       <td><input type="text" name="password" id="pass-field"></td>
                                       <td><input type="checkbox" name="id_mod" id="mod-field" 
-                                          @if (user.is_mod==1)
+                                          @if ($user->is_mod==1)
                                               checked
                                           @endif
                                           ></td>
                                       <td>
-                                          <button type="submit">zapisz</button>
-                                          <a href="admin/users/edit/{{user.id}}/delete" target="_blank" rel="noopener noreferrer">usuń</a>
+                                          <button type="submit">save</button>
+                                          <a href="admin/users/edit/{{$user->id}}/delete" target="_blank" rel="noopener noreferrer">del</a>
                                       </td>
                                   </form>
                                 </tr>

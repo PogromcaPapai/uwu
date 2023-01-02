@@ -58,21 +58,16 @@ Route::prefix('events')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::prefix('events')->group(function () {
-        Route::get('index', [ModEventController::class, 'index'])->middleware(['auth'])->name('admin_events');
-        
-        Route::get('edit/{id}', [ModEventController::class, 'edit'])->middleware(['auth']);
-        Route::post('edit/{id}', [ModEventController::class, 'update'])->middleware(['auth']);
+    Route::get('events/index', [ModEventController::class, 'index'])->middleware(['auth'])->name('admin_events');
     
-        Route::get('edit/{id}/delete', [ModEventController::class, 'destroy'])->middleware(['auth']);
-        
-    });
+    Route::get('events/edit/{id}', [ModEventController::class, 'edit'])->middleware(['auth']);
+    Route::post('events/edit/{id}', [ModEventController::class, 'update'])->middleware(['auth']);
 
-    Route::prefix('users')->group(function () {
-        Route::get('index', [ModUserController::class, 'index'])->middleware(['auth'])->name('admin_users');
-        Route::post('edit', [ModUserController::class, 'post'])->middleware(['auth']);
-        Route::get('edit/{id}/delete', [ModUserController::class, 'delete'])->middleware(['auth']);
-    });
+    Route::get('events/edit/{id}/delete', [ModEventController::class, 'destroy'])->middleware(['auth']);
+
+    Route::get('users/index', [ModUserController::class, 'index'])->middleware(['auth'])->name('admin_users');
+    Route::post('users/edit/{id}', [ModUserController::class, 'post'])->middleware(['auth']);
+    Route::get('users/edit/{id}/delete', [ModUserController::class, 'destroy'])->middleware(['auth']);
 });
 
 require __DIR__.'/auth.php';
