@@ -8,10 +8,7 @@ use App\Models\Event;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
-
-function authAdmin() {
-    return User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() > 0;
-}
+use App\Http\Requests\EventForm;
 
 class ModEventController extends Controller
 {
@@ -22,7 +19,7 @@ class ModEventController extends Controller
      */
     public function index(Request $request)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         // Zbieranie danych o wydarzeniach w których uczestniczy użytkownik
@@ -44,7 +41,7 @@ class ModEventController extends Controller
      */
     public function edit(int $id)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         // Zebranie wydarzeń
@@ -75,7 +72,7 @@ class ModEventController extends Controller
      */
     public function update(EventForm $request, int $id)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         // Zebranie wydarzeń
@@ -121,7 +118,7 @@ class ModEventController extends Controller
      */
     public function destroy(int $id)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         Event::find($id)->delete();

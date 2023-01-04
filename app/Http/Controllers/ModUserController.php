@@ -7,16 +7,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-function authAdmin() {
-    return User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() > 0;
-}
-
 class ModUserController extends Controller
 {
 
     public function index(Request $request)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         $users = User::get(['id', 'name', 'email', 'is_mod']);
@@ -25,7 +21,7 @@ class ModUserController extends Controller
     
     public function post(Request $request, int $id)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         User::find($id)->update([
@@ -42,7 +38,7 @@ class ModUserController extends Controller
     }
     public function destroy(int $id)
     {
-        if (!authAdmin()) {
+        if (User::where('id', '=', Auth::id())->where('is_mod', '=', '1')->count() <= 0) {
             return abort(401, "You are not a moderator");
         }
         User::find($id)->delete();
