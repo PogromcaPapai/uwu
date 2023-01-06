@@ -34,7 +34,7 @@ class ModUserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         }
-        return redirect('/users/index');
+        return redirect('/admin/users/index');
     }
     public function destroy(int $id)
     {
@@ -42,6 +42,6 @@ class ModUserController extends Controller
             return abort(401, "You are not a moderator");
         }
         User::find($id)->delete();
-        return redirect('/users/index');
+        return redirect('/admin/users/index');
     }
 }
