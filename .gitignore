@@ -330,3 +330,5 @@ cython_debug/
 config.json
 *_secret.json
 gmail_token.json
+
+README.txt
